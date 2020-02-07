@@ -159,7 +159,7 @@ def kmp(T, P):
 
     return found
 
-
+""""
 if __name__ == '__main__':
     text = 'abaabccbcabbabaab'
     pattern = 'abba'
@@ -167,3 +167,4 @@ if __name__ == '__main__':
     #print boyer_moore(text, pattern)
     print(kmp(text, pattern))
     #print list('aba')
+"""

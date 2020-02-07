@@ -28,13 +28,28 @@ if __name__ == "__main__":
     parser = Parser()
     graph = Graph(True)
     vertices = {}
-    ucitaj_fajlove("/home/radovan/Documents/python/Projekat_OISISI/python-2.7.7-docs-html", graph, vertices)
+    radovanov_root= "/home/radovan/Documents/python/Projekat_OISISI/python-2.7.7-docs-html"
+    aleksandrov_root= "/home/hal9000/OISISI_python_projekat/test-skup/python-2.7.7-docs-html"
+    print("Izaberite korisnika:")
+    print("1. Radovan")
+    print("2. Aleksandar")
+    print("3. Custom adress")
+    adresa=input(">>>>>")
+    if int(adresa) == 1:
+        ucitaj_fajlove(radovanov_root,graph,vertices)
+    elif int(adresa) == 2:
+        ucitaj_fajlove(aleksandrov_root,graph,vertices)
+    else:
+        print("Unesite adresu:")
+        adresaCustom=input(">>>>>")
+        ucitaj_fajlove(adresaCustom,graph,vertices)
+    #ucitaj_fajlove("/home/radovan/Documents/python/Projekat_OISISI/python-2.7.7-docs-html", graph, vertices)
     for element in graph.vertices():
         edg = parser.parse(str(element))
         napravi_veze(element, edg[0], graph, vertices)
 
-    print(graph.get_edge(vertices["/home/radovan/Documents/python/Projekat_OISISI/python-2.7.7-docs-html/genindex-K.html"], vertices["/home/radovan/Documents/python/Projekat_OISISI/python-2.7.7-docs-html/library/curses.html"]))
-
+   # print(graph.get_edge(vertices["/home/radovan/Documents/python/Projekat_OISISI/python-2.7.7-docs-html/genindex-K.html"], vertices["/home/radovan/Documents/python/Projekat_OISISI/python-2.7.7-docs-html/library/curses.html"]))
+    """"
     (outgoing, incoming) = graph.get_edges(vertices["/home/radovan/Documents/python/Projekat_OISISI/python-2.7.7-docs-html/genindex-K.html"])
     for o in outgoing:
         print(str(o))
@@ -46,3 +61,4 @@ if __name__ == "__main__":
         print(str(i))
     print(graph.vertex_count())
     print(graph.edge_count())
+"""
