@@ -44,3 +44,4 @@ class lista_bez_duplikata(object):
                         ret_lista.remove(elem1)
         ret_lista = list(dict.fromkeys(ret_lista))
         return ret_lista
+

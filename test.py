@@ -63,6 +63,7 @@ if __name__ == "__main__":
     vertices = {}
     radovanov_root = "/home/radovan/Documents/python/Projekat_OISISI/python-2.7.7-docs-html"
     aleksandrov_root = "/home/hal9000/OISISI_python_projekat/test-skup/python-2.7.7-docs-html"
+
     print("Izaberite korisnika:")
     print("1. Radovan")
     print("2. Aleksandar")
@@ -91,7 +92,16 @@ if __name__ == "__main__":
             print("uneta je nepoznata vrednost!")
     elif int(adresa) == 3:
         print("Unesite adresu:")
-        adresaCustom = input(">>>>>")
+
+        adresaCustom=input(">>>>>")
+        ucitaj_fajlove(adresaCustom,graph,vertices)
+    #
+    # for element in graph.vertices():
+    #     edg = parser.parse(str(element))
+    #     napravi_veze(element, edg[0], graph, vertices)
+
+
+
         print("Ucitavanje za trie(1) ili ucitavanje za graph(2):")
         k = input(">>>>>>")
         if int(k) == 1:
@@ -113,16 +123,15 @@ if __name__ == "__main__":
         for rec in reci1:
             trie.add_word(rec.lower(), "gui.html")
 
-        # print(trie.find_word("123456789"))
 
-        # print(trie.find_word("12345678"))
         proveri_postojanje(trie, "123345324")
         proveri_postojanje(trie, "is")
 
-        # print(trie.find_word(""))
 
-        # if(trie.does_word_exist("general")):
-        #     print(trie.find_word("general"))
+    """
+    for element in graph.vertices():
+        edg = parser.parse(str(element))
+        napravi_veze(element, edg[0], graph, vertices)
 
     #   trie.preorder(trie.root)
     #
@@ -131,7 +140,7 @@ if __name__ == "__main__":
     #     napravi_veze(element, edg[0], graph, vertices)
 
     # print(graph.get_edge(vertices["/home/radovan/Documents/python/Projekat_OISISI/python-2.7.7-docs-html/genindex-K.html"], vertices["/home/radovan/Documents/python/Projekat_OISISI/python-2.7.7-docs-html/library/curses.html"]))
-    """"
+
     (outgoing, incoming) = graph.get_edges(vertices["/home/radovan/Documents/python/Projekat_OISISI/python-2.7.7-docs-html/genindex-K.html"])
     for o in outgoing:
         print(str(o))
