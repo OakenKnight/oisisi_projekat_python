@@ -1,77 +1,86 @@
-"""
-Modul sadrži implementaciju stabla.
-"""
 from queue import Queue
+from treeNode import TreeNode
+from lista import lista_bez_duplikata
+
 
 class Tree(object):
-    """
-    Klasa modeluje stablo.
-    """
+
     def __init__(self):
-        self.root = None
+        self.root = TreeNode("*")
+
+    def add_word(self, word, origin_file):
+
+        torka=self.does_word_exist(word)
+        files=torka[1]
+        if files is None:
+            files = lista_bez_duplikata()
+
+        if torka[0] is True:
+            files.add_element(origin_file)
+            return
+
+        curr_node = self.root
+
+        for letter in word:
+            if letter not in curr_node.children:
+                curr_node.children[letter] = TreeNode(letter)
+
+            curr_node = curr_node.children[letter]
+
+        curr_node.is_end_of_word = True
+        files.add_element(origin_file)
+        curr_node.originFile = files
+
+    def does_word_exist(self, word):
+        curr_node = self.root
+        #lista = lista_bez_duplikata()
+        for letter in word:
+            if letter not in curr_node.children:
+                return False, None
+            curr_node = curr_node.children[letter]
+
+        return  True,curr_node.originFile
+
+    def find_word(self, word):
+        curr_node = self.root
+        for letter in word:
+            if letter not in curr_node.children:
+                break
+
+            curr_node = curr_node.children[letter]
+        if curr_node.is_end_of_word:
+            fajls=curr_node.originFile
+            print(fajls)
+            return curr_node.originFile
 
     def is_empty(self):
-        """
-        Metoda proverava da li stablo ima elemenata.
-        """
         return self.root is None
 
     def depth(self, x):
-        """
-        Metoda izračunava dubinu zadatog čvora.
-
-        Argument:
-        - `x`: čvor čija dubina se računa
-        """
         if x.is_root():
             return 0
         else:
             return 1 + self.depth(x.parent)
 
     def height(self, x):
-        """
-        Metoda izračunava visinu podstabla sa zadatim korenom.
-
-        Argument:
-        - `x`: koren posmatranog podstabla
-        """
         if x.is_leaf():
             return 0
         else:
             return 1 + max(self.height(c) for c in x.children)
 
     def preorder(self, x):
-        """
-        Preorder obilazak po dubini
-
-        Najpre se vrši obilazak roditelja a zatim svih njegovih potomaka.
-
-        Argument:
-        - `x`: čvor od koga počinje obilazak
-        """
         if not self.is_empty():
-            print(x.data)
+            print(x.letter)
             for c in x.children:
                 self.preorder(c)
 
     def postorder(self, x):
-        """
-        Postorder obilazak po dubini
-
-        Najpre se vrši obilazak potomaka a zatim i roditelja
-
-        Argument:
-        - `x`: čvor od koga počinje obilazak
-        """
         if not self.is_empty():
             for c in x.children:
                 self.postorder(c)
             print(x.data)
 
     def breadth_first(self):
-        """
-        Metoda vrši obilazak stabla po širini.
-        """
         to_visit = Queue()
         to_visit.enqueue(self.root)
         while not to_visit.is_empty():
@@ -90,40 +99,3 @@ class Tree(object):
 
             for c in e.children:
                 to_visit.enqueue(c)
-"""""
-if __name__ == '__main__':
-    instanca stabla
-   t = Tree()
-   t.root = TreeNode(0)
-
-   # kreiranje relacija između novih čvorova
-   a = TreeNode(1)
-   b = TreeNode(2)
-   c = TreeNode(3)
-
-   a.add_child(b)
-   t.root.add_child(a)
-   t.root.add_child(c)
-
-    visina stabla
-   print('Visina = %d' % t.height(t.root))
-
-    dubina čvora
-   print('Dubina(a) = %d' % t.depth(a))
-
-    obilazak po dubini - preorder
-   print('PREORDER')
-   t.preorder(t.root)
-
-    obilazak po dubini - postorder
-   print('POSTORDER')
-   t.postorder(t.root)
-
-    obilazak po širini
-   print('BREADTH FIRST')
-   t.breadth_first()
-
-   print("ITER")
-   for node in t:
-       print(node)
-"""

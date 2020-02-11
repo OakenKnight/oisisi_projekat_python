@@ -1,43 +1,22 @@
+from lista import lista_bez_duplikata
+
+
 class TreeNode(object):
-    """
-    Klasa modeluje čvor stabla.
-    """
-    __slots__ = 'parent', 'children', 'data'
-
-    def __init__(self, data):
-        """
-        Konstruktor.
-
-        Argument:
-        - `data`: podatak koji se upisuje u čvor
-        """
-        self.parent = None
-        self.children = []
-        self.data = data
+    def __init__(self, letter):
+        self.letter = letter
+        self.children = {}
+        self.is_end_of_word = False
+        self.originFile = lista_bez_duplikata()
 
     def is_root(self):
-        """
-        Metoda proverava da li je čvor koren stabla.
-        """
         return self.parent is None
 
     def is_leaf(self):
-        """
-        Metoda proverava da li je čvor list stabla.
-        """
         return len(self.children) == 0
 
     def add_child(self, x):
-        """
-        Metoda dodaje potomka čvoru.
-
-        Argument:
-        - `x`: čvor potomak
-        """
-        # kreiranje dvosmerne veze između čvorova
         x.parent = self
         self.children.append(x)
 
     def __str__(self):
-        return str(self.data)
-
+        return str(self.letter)
