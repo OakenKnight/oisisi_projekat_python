@@ -139,8 +139,7 @@ if __name__ == "__main__":
         reci = ret[1]
         for rec in reci:
             trie.add_word(rec.lower(), "index.html")
-        if (trie.does_word_exist("123456789")):
-    
+
         ret1 = parser.parse("/home/hal9000/OISISI_python_projekat/test-skup/python-2.7.7-docs-html/faq/gui.html")
         reci1 = ret1[1]
         for rec in reci1:

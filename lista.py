@@ -28,7 +28,8 @@ class lista_bez_duplikata():
                 return False
         return True
     def append(self,item):
-        self.list.append(item)
+        if self.list.__contains__(item) is False:
+            self.list.append(item)
 
     def copy(self):
         lista1 = lista_bez_duplikata()

@@ -1,3 +1,4 @@
+import upit
 from parser import Parser
 from graph import Graph
 from tree import Tree
@@ -6,7 +7,7 @@ import os
 
 i = 10
 l = 0
-
+lista_dokumenata=[]
 def napravi_cvorove(file_path, graph, vertices):
     fajlovi = os.listdir(file_path)
     for fajl in fajlovi:
@@ -17,7 +18,7 @@ def napravi_cvorove(file_path, graph, vertices):
             vertices[putanja] = graph.insert_vertex(putanja)
 
 
-def napravi_veze(vert, edg, graph, veritces):
+def napravi_veze(vert, edg, graph, vertices):
     global i
     for v in edg:
         if v.endswith("html") or v.endswith("htm"):
@@ -26,35 +27,46 @@ def napravi_veze(vert, edg, graph, veritces):
 
 
 def napravi_drvo(file_path, trie, parser):
+    global lista_dokumenata
+
     fajlovi = os.listdir(file_path)
     for fajl in fajlovi:
         putanja = file_path + "/" + fajl
-        if os.path.isdir(putanja):
+        putanja1=os.path.join(file_path, fajl)
+        #print(putanja1)
+        if os.path.isdir(putanja1):
             napravi_drvo(putanja, trie, parser)
         elif fajl.endswith("html"):
             parseHtml(file_path, trie, parser, fajl)
-
+            lista_dokumenata.append(fajl)
 
 def parseHtml(file_path, trie, parser, fajl):
     global l
     l = l + 1
     putanja = file_path + "/" + fajl
-    ret = parser.parse(putanja)
+    putanja1=os.path.join(file_path,fajl)
+    ret = parser.parse(putanja1)
     words = ret[1]
     for word in words:
-        trie.add_word(word, fajl)
+        trie.add_word(word.lower(), fajl)
 
 
 def proveri_postojanje(trie, word):
     if trie.does_word_exist(word)[1] is None:
         print("Ne postoji ta rec!")
     else:
-        trie.find_word(word)
-
+        lista = trie.find_word(word.lower())
+        print(lista)
 
 
 if __name__ == "__main__":
+    parser = Parser()
+    graph = Graph(True)
+    trie = Tree()
 
+    root = trie.root
+
+    vertices = {}
     petlja = True
     korenski_dir = "test-skup"
     while petlja:
@@ -100,3 +112,23 @@ if __name__ == "__main__":
                 print("#POGRESAN UNOS !!!")
 
     print("Izabrani direktorijum:", korenski_dir)
+    print("Loading....")
+    napravi_drvo(korenski_dir,trie,parser)
+
+    userInput = 1
+    petlja = True
+    while petlja:
+        print("1 - Pretrazi rec: ")
+        print("0 - Exit")
+        userInput = input(">>>>>>>>")
+        if int(userInput) == 1:
+            querry=input("Unesite rec za pretrazivanje: ")
+
+            ret_querry=upit.parsiraj_upit(querry)
+            doc_list=upit.upitaj(trie,ret_querry[1],ret_querry[2],ret_querry[0],lista_dokumenata)
+            print(doc_list)
+            continue
+        elif int(userInput) == 0:
+            petlja = False
+        else:
+            print("Nepoznata komanda")
