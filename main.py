@@ -1,12 +1,14 @@
+import upit
 from parser import Parser
 from graph import Graph
 from tree import Tree
 from treeNode import TreeNode
 import os
+from sort import quick_sort
 
 i = 10
 l = 0
-
+lista_dokumenata=[]
 def napravi_cvorove(file_path, graph, vertices):
     fajlovi = os.listdir(file_path)
     for fajl in fajlovi:
@@ -34,37 +36,45 @@ def napravi_veze(vert, edg, graph, vertices):
 
 
 def napravi_drvo(file_path, trie, parser):
+    global lista_dokumenata
+
     fajlovi = os.listdir(file_path)
     for fajl in fajlovi:
         putanja = file_path + "/" + fajl
-        if os.path.isdir(putanja):
+        putanja1=os.path.join(file_path, fajl)
+        #print(putanja1)
+        if os.path.isdir(putanja1):
             napravi_drvo(putanja, trie, parser)
         elif fajl.endswith("html"):
             parseHtml(file_path, trie, parser, fajl)
-
+            lista_dokumenata.append(fajl)
 
 def parseHtml(file_path, trie, parser, fajl):
     global l
     l = l + 1
     putanja = file_path + "/" + fajl
-    ret = parser.parse(putanja)
+    putanja1=os.path.join(file_path,fajl)
+    ret = parser.parse(putanja1)
     words = ret[1]
     for word in words:
-        trie.add_word(word, fajl)
+        trie.add_word(word.lower(), fajl)
 
 
 def proveri_postojanje(trie, word):
     if trie.does_word_exist(word)[1] is None:
         print("Ne postoji ta rec!")
     else:
-        trie.find_word(word)
-
+        lista = trie.find_word(word.lower())
+        print(lista)
 
 
 if __name__ == "__main__":
-
     parser = Parser()
     graph = Graph(True)
+    trie = Tree()
+    root = trie.root
+
+
     vertices = {}
     petlja = True
     korenski_dir = "test-skup"
@@ -108,9 +118,10 @@ if __name__ == "__main__":
                 print("#Izabrali ste direktorijum: ", str(korenski_dir))
                 petlja = False
             else:
-                print("#POGRESAN UNOS !!!")
+                print("#Nepostojeca komanda !!!")
 
-    print("~~~Ucitavanje podataka~~~")
+
+    print("Loading graph....")
     if korenski_dir == 'test-skup':
         napravi_cvorove("test-skup", graph, vertices)
     else:
@@ -120,3 +131,37 @@ if __name__ == "__main__":
     for element in graph.vertices():
         edg = parser.parse(str(element))
         napravi_veze(element, edg[0], graph, vertices)
+
+    print("Loading trie....")
+    napravi_drvo(korenski_dir,trie,parser)
+
+    userInput = 1
+    petlja = True
+    while petlja:
+        print("1 - Pretrazi rec: ")
+        print("0 - Exit")
+        userInput = input(">>>>>>>>")
+        if int(userInput) == 1:
+            querry=input("Unesite rec za pretrazivanje: ")
+
+            ret_querry=upit.parsiraj_upit(querry)
+            doc_list=upit.upitaj(trie,ret_querry[1],ret_querry[2],ret_querry[0],lista_dokumenata)
+            doc_list = [korenski_dir + "/" + doc for doc in doc_list]
+            quick_sort(doc_list, 0, len(doc_list) - 1, graph, vertices)
+            i = 1
+            print("---------------------------------------------------------------")
+            print("~~~~~~~~Trazena rec se pojavljuje u sledecim stranicama~~~~~~~~")
+            for doc in doc_list:
+                (outc, inc) = graph.get_edges(vertices[doc])
+                print(i, ".", doc)
+                print("\t\t-Broj stranica koje pokazuju na ovu stranicu:", len(inc))
+                print("\t\t-Broj stranica na koje pokazuje ova stranica:", len(outc))
+                i += 1
+            print("---------------------------------------------------------------")
+
+
+        elif int(userInput) == 0:
+            petlja = False
+        else:
+            print("Nepoznata komanda")
+
