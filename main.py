@@ -4,6 +4,7 @@ from graph import Graph
 from tree import Tree
 from treeNode import TreeNode
 import os
+from sort import quick_sort
 
 i = 10
 l = 0
@@ -22,7 +23,15 @@ def napravi_veze(vert, edg, graph, vertices):
     global i
     for v in edg:
         if v.endswith("html") or v.endswith("htm"):
-            graph.insert_edge(vert, vertices[v], i)  # hash(vert) + hash(vertices[v]))
+            lok_adresa = str(v).split("/")
+            v = "test-skup"
+            prodji = False
+            for l in lok_adresa:
+                if prodji:
+                    v = v + "/" + l
+                if l == "test-skup":
+                    prodji = True
+            graph.insert_edge(vert, vertices[v], i)
             i = i + 10
 
 
@@ -63,8 +72,8 @@ if __name__ == "__main__":
     parser = Parser()
     graph = Graph(True)
     trie = Tree()
-
     root = trie.root
+
 
     vertices = {}
     petlja = True
@@ -109,10 +118,21 @@ if __name__ == "__main__":
                 print("#Izabrali ste direktorijum: ", str(korenski_dir))
                 petlja = False
             else:
-                print("#POGRESAN UNOS !!!")
+                print("#Nepostojeca komanda !!!")
 
-    print("Izabrani direktorijum:", korenski_dir)
-    print("Loading....")
+
+    print("Loading graph....")
+    if korenski_dir == 'test-skup':
+        napravi_cvorove("test-skup", graph, vertices)
+    else:
+        dir = korenski_dir.split("/")
+        napravi_cvorove("test-skup" + "/" + str(dir[1]), graph, vertices)
+
+    for element in graph.vertices():
+        edg = parser.parse(str(element))
+        napravi_veze(element, edg[0], graph, vertices)
+
+    print("Loading trie....")
     napravi_drvo(korenski_dir,trie,parser)
 
     userInput = 1
@@ -128,8 +148,23 @@ if __name__ == "__main__":
             doc_list=upit.upitaj(trie,ret_querry[1],ret_querry[2],ret_querry[0],lista_dokumenata)
 
             print(doc_list)
-            continue
+
+            doc_list = [korenski_dir + "/" + doc for doc in doc_list]
+            quick_sort(doc_list, 0, len(doc_list) - 1, graph, vertices)
+            i = 1
+            print("---------------------------------------------------------------")
+            print("~~~~~~~~Trazena rec se pojavljuje u sledecim stranicama~~~~~~~~")
+            for doc in doc_list:
+                (outc, inc) = graph.get_edges(vertices[doc])
+                print(i, ".", doc)
+                print("\t\t-Broj stranica koje pokazuju na ovu stranicu:", len(inc))
+                print("\t\t-Broj stranica na koje pokazuje ova stranica:", len(outc))
+                i += 1
+            print("---------------------------------------------------------------")
+
+
         elif int(userInput) == 0:
             petlja = False
         else:
             print("Nepoznata komanda")
+

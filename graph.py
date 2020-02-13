@@ -27,6 +27,10 @@ class Graph:
         for secondary_map in self._outgoing.values():
             result.update(secondary_map.values())
         return result
+    def count_of_incoming(self,v):
+        self._validate_vertex(v)
+        return len(self._incoming[v])
+
 
     def get_edge(self, u, v):
         self._validate_vertex(u)
