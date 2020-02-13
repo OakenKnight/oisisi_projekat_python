@@ -39,25 +39,52 @@ def parsiraj_upit(upit):
 def upitaj(tree,bin1,bin2,i,lista):
     #print(lista)
     ret_list = lista_bez_duplikata()
+    occur_map1={}
+    occur_map2={}
+
     if i == 0:
         if bin1 == "0":
-            lista2 = tree.find_word(bin2)
+            torka = tree.find_word(bin2)
+            lista2 = torka[0]
+            # occur_map1 = torka[1]
+            # occur_map2={}
             ret_list = skupovne_operacije.comp_op(lista,lista2)
+
         else:
-            lista1 = tree.find_word(bin1)
-            lista2 = tree.find_word(bin2)
+            torka1 = tree.find_word(bin1)
+            torka2 = tree.find_word(bin2)
+
+            lista1 = torka1[0]
+            lista2 = torka2[0]
+
+            # occur_map1 = torka1[1]
+            # occur_map2 = torka2[1]
+
             ret_list = skupovne_operacije.comp_op(lista1,lista2)
 
     elif i == 1:
-        lista1 = tree.find_word(bin1)
-        lista2 = tree.find_word(bin2)
+        torka1 = tree.find_word(bin1)
+        torka2 = tree.find_word(bin2)
+
+        lista1 = torka1[0]
+        lista2 = torka2[0]
+        #
+        # occur_map1 = torka1[1]
+        # occur_map2 = torka2[1]
         ret_list=skupovne_operacije.and_op(lista1,lista2)
 
     elif i == 2:
-        lista1 = tree.find_word(bin1)
-        lista2 = tree.find_word(bin2)
+        torka1 = tree.find_word(bin1)
+        torka2 = tree.find_word(bin2)
+
+        lista1 = torka1[0]
+        lista2 = torka2[0]
+        #
+        # occur_map1 = torka1[1]
+        # occur_map2 = torka2[1]
         ret_list = skupovne_operacije.or_op(lista1, lista2)
     elif i == 3:
         ret_list = tree.find_word(bin1)
 
-    return ret_list
+    return ret_list #, occur_map1, occur_map2
+

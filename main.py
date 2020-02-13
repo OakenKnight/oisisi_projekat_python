@@ -126,6 +126,7 @@ if __name__ == "__main__":
 
             ret_querry=upit.parsiraj_upit(querry)
             doc_list=upit.upitaj(trie,ret_querry[1],ret_querry[2],ret_querry[0],lista_dokumenata)
+
             print(doc_list)
             continue
         elif int(userInput) == 0:

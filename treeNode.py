@@ -7,6 +7,7 @@ class TreeNode(object):
         self.children = {}
         self.is_end_of_word = False
         self.originFile = lista_bez_duplikata()
+        self.occurnace = {}
 
     def is_root(self):
         return self.parent is None
