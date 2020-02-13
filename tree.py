@@ -43,15 +43,27 @@ class Tree(object):
 
     def find_word(self, word):
         curr_node = self.root
+        lista=lista_bez_duplikata()
         for letter in word:
             if letter not in curr_node.children:
                 break
 
             curr_node = curr_node.children[letter]
-        if curr_node.is_end_of_word:
-            fajls=curr_node.originFile
-            print(fajls)
-            return curr_node.originFile
+        if curr_node.is_end_of_word is True:
+            lista = curr_node.originFile
+           # print(lista)
+            return lista
+        return lista
+        # curr_node = self.root
+        # for letter in word:
+        #     if letter not in curr_node.children:
+        #         break
+        #
+        #     curr_node = curr_node.children[letter]
+        # if curr_node.is_end_of_word:
+        #     fajls=curr_node.originFile
+        #     print(fajls)
+        #     return fajls
 
 
     def is_empty(self):

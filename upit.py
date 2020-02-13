@@ -7,6 +7,10 @@ def parsiraj_upit(upit):
     i=-1
     bin1=""
     bin2=""
+    if len(words) == 1:
+        i=3
+        bin1 = upit
+        bin2 = "0"
     for j in range(len(words)):
         word = words[j]
         if word.lower() == "not":
@@ -33,7 +37,7 @@ def parsiraj_upit(upit):
 
     return i,bin1,bin2
 def upitaj(tree,bin1,bin2,i,lista):
-    print(lista)
+    #print(lista)
     ret_list = []
     if i == 0:
         if bin1 == "0":
@@ -46,12 +50,15 @@ def upitaj(tree,bin1,bin2,i,lista):
     elif i == 1:
         lista1 = tree.find_word(bin1)
         lista2 = tree.find_word(bin2)
-        print(lista1,lista2)
+        #print(lista1,lista2)
         ret_list=skupovne_operacije.and_op(lista1,lista2)
     elif i == 2:
         lista1 = tree.find_word(bin1)
+        print(lista1)
         lista2 = tree.find_word(bin2)
+        print(lista2)
         ret_list = skupovne_operacije.or_op(lista1, lista2)
-
+    elif i == 3:
+        ret_list = tree.find_word(bin1)
 
     return ret_list

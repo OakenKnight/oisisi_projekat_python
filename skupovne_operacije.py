@@ -1,5 +1,5 @@
 from lista import lista_bez_duplikata
-
+import copy
 
 def and_op(lista1, lista2):
     ret_lista = lista_bez_duplikata()
@@ -27,7 +27,5 @@ def comp_op(lista1, lista2):  # svi elementi prve liste koji se ne poklapaju ni 
     for elem1 in lista1:
         for elem2 in lista2:
             if elem1 == elem2:
-                if ret_lista.__contains__(elem1):
-                    ret_lista.remove(elem1)
-    ret_lista = list(dict.fromkeys(ret_lista))
+                ret_lista.remove(elem1)
     return ret_lista

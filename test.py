@@ -2,7 +2,6 @@ from parser import Parser
 from graph import Graph
 from tree import Tree
 import os
-from lista import lista_bez_duplikata
 import upit
 
 i = 10
@@ -29,11 +28,11 @@ def napravi_veze(vert, edg, graph, veritces):
 
 
 def ucitaj_fajlove2(file_path, trie, parser):
-    global lista_dokumenata
+   # global lista_dokumenata
 
     fajlovi = os.listdir(file_path)
     for fajl in fajlovi:
-        putanja = file_path + "/" + fajl #treba prepraviti da se omoguci i win verzija, pa se to onda radi sa join
+        putanja = file_path + "/" + fajl
         if os.path.isdir(putanja):
             ucitaj_fajlove2(putanja, trie, parser)
         elif fajl.endswith("html") or fajl.endswith("htm"):
@@ -47,16 +46,21 @@ def parseHtml(file_path, trie, parser, fajl):
     ret = parser.parse(putanja)
     words = ret[1]
     for word in words:
-        trie.add_word(word, fajl)
+        trie.add_word(word.lower(), fajl)
 
 
 def proveri_postojanje(trie, word):
-    if trie.does_word_exist(word)[1] is None:
+    if trie.does_word_exist(word.lower())[1] is None:
         print("Ne postoji ta rec!")
+
     else:
-        trie.find_word(word)
-
-
+        lista = trie.does_word_exist(word)[1]
+       # print(lista)
+        # print(trie.find_word(word))
+        lista1=trie.find_word(word)
+        print(lista1)
+        for elem in lista1:
+            print(elem)
 if __name__ == "__main__":
     parser = Parser()
     graph = Graph(True)
@@ -67,7 +71,7 @@ if __name__ == "__main__":
 
     vertices = {}
     radovanov_root = "/home/radovan/Documents/python/Projekat_OISISI/python-2.7.7-docs-html"
-    aleksandrov_root = "/home/hal9000/OISISI_python_projekat/test-skup/python-2.7.7-docs-html"
+    aleksandrov_root = "/home/hal9000/OISISI_python_projekat/test-skup/python-2.7.7-docs-html/_images"
     string = upit.parsiraj_upit("not java")
     print("Izaberite korisnika:")
     print("1. Radovan")
@@ -89,7 +93,7 @@ if __name__ == "__main__":
         k = input(">>>>>>")
         if int(k) == 1:
             ucitaj_fajlove2(aleksandrov_root, trie, parser)
-
+            proveri_postojanje(trie,"python")
             while True:
 
                 querry=input("Unesite upit:")
@@ -98,7 +102,7 @@ if __name__ == "__main__":
                 string = upit.parsiraj_upit(querry)
                 print(string)
                 doc_list = upit.upitaj(trie,string[1],string[2],string[0],lista_dokumenata)
-                #print(doc_list)
+                print(doc_list)
 
 
         elif int(k) == 2:
