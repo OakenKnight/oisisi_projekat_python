@@ -53,48 +53,66 @@ def proveri_postojanje(trie, word):
 
 
 if __name__ == "__main__":
-    parser = Parser()
-    graph = Graph(True)
-    trie = Tree()
 
-    root = trie.root
-    # trie.root=root
 
-    vertices = {}
-    radovanov_root = "/home/radovan/Documents/python/Projekat_OISISI/python-2.7.7-docs-html"
-    aleksandrov_root = "/home/hal9000/OISISI_python_projekat/test-skup/python-2.7.7-docs-html"
 
-    print("Izaberite korisnika:")
-    print("1. Radovan")
-    print("2. Aleksandar")
-    print("3. Custom adress")
-    adresa = input(">>>>>")
-    if int(adresa) == 1:
-        print("Ucitavanje za trie(1) ili ucitavanje za graph(2):")
-        k = input(">>>>>>")
-        if int(k) == 1:
-            ucitaj_fajlove2(radovanov_root, trie, parser)
-        elif int(k) == 2:
-            ucitaj_fajlove(radovanov_root, graph, vertices)
-        else:
-            print("uneta je nepoznata vrednost!")
 
-    elif int(adresa) == 2:
-        print("Ucitavanje za trie(1) ili ucitavanje za graph(2):")
-        k = input(">>>>>>")
-        if int(k) == 1:
-            ucitaj_fajlove2(aleksandrov_root, trie, parser)
-            proveri_postojanje(trie, "APADRAPA")
-            print(l)
-        elif int(k) == 2:
-            ucitaj_fajlove(aleksandrov_root, graph, vertices)
-        else:
-            print("uneta je nepoznata vrednost!")
-    elif int(adresa) == 3:
-        print("Unesite adresu:")
-
-        adresaCustom=input(">>>>>")
-        ucitaj_fajlove(adresaCustom,graph,vertices)
+    #
+    # parser = Parser()
+    # graph = Graph(True)
+    # trie = Tree()
+    #
+    # root = trie.root
+    # # trie.root=root
+    #
+    # vertices = {}
+    # radovanov_root = "/home/radovan/Documents/Projekat python/oisisi_projekat_python/test-skup/python-2.7.7-docs-html/faq"
+    # aleksandrov_root = "/home/hal9000/OISISI_python_projekat/test-skup/python-2.7.7-docs-html"
+    #
+    # print("Izaberite korisnika:")
+    # print("1. Radovan")
+    # print("2. Aleksandar")
+    # print("3. Custom adress")
+    # adresa = input(">>>>>")
+    # if int(adresa) == 1:
+    #     print("Ucitavanje za trie(1) ili ucitavanje za graph(2):")
+    #     k = input(">>>>>>")
+    #     if int(k) == 1:
+    #         ucitaj_fajlove2(radovanov_root, trie, parser)
+            # ret = parser.parse("/home/radovan/Documents/Projekat python/oisisi_projekat_python/test-skup/python-2.7.7-docs-html/faq/index.html")
+            # reci = ret[1]
+            # for rec in reci:
+            #     trie.add_word(rec.lower(), "index.html")
+            #
+            # # if (trie.does_word_exist("123456789")):
+            #
+            # ret1 = parser.parse("/home/radovan/Documents/Projekat python/oisisi_projekat_python/test-skup/python-2.7.7-docs-html/faq/gui.html")
+            # reci1 = ret1[1]
+            # for rec in reci1:
+            #     trie.add_word(rec.lower(), "gui.html")
+            #
+    #         # proveri_postojanje(trie, "pygtk")
+    #     elif int(k) == 2:
+    #         ucitaj_fajlove(radovanov_root, graph, vertices)
+    #     else:
+    #         print("uneta je nepoznata vrednost!")
+    #
+    # elif int(adresa) == 2:
+    #     print("Ucitavanje za trie(1) ili ucitavanje za graph(2):")
+    #     k = input(">>>>>>")
+    #     if int(k) == 1:
+    #         ucitaj_fajlove2(aleksandrov_root, trie, parser)
+    #         proveri_postojanje(trie, "APADRAPA")
+    #         print(l)
+    #     elif int(k) == 2:
+    #         ucitaj_fajlove(aleksandrov_root, graph, vertices)
+    #     else:
+    #         print("uneta je nepoznata vrednost!")
+    # elif int(adresa) == 3:
+    #     print("Unesite adresu:")
+    #
+    #     adresaCustom=input(">>>>>")
+    #     ucitaj_fajlove(adresaCustom,graph,vertices)
     #
     # for element in graph.vertices():
     #     edg = parser.parse(str(element))
@@ -102,30 +120,30 @@ if __name__ == "__main__":
 
 
 
-        print("Ucitavanje za trie(1) ili ucitavanje za graph(2):")
-        k = input(">>>>>>")
-        if int(k) == 1:
-            ucitaj_fajlove2(adresaCustom, root, parser)
-        elif int(k) == 2:
-            ucitaj_fajlove(adresaCustom, graph, vertices)
-        else:
-            print("uneta je nepoznata vrednost!")
-    else:
-        ret = parser.parse("/home/hal9000/OISISI_python_projekat/test-skup/python-2.7.7-docs-html/faq/index.html")
-        reci = ret[1]
-        for rec in reci:
-            trie.add_word(rec.lower(), "index.html")
-
-        # if (trie.does_word_exist("123456789")):
-
-        ret1 = parser.parse("/home/hal9000/OISISI_python_projekat/test-skup/python-2.7.7-docs-html/faq/gui.html")
-        reci1 = ret1[1]
-        for rec in reci1:
-            trie.add_word(rec.lower(), "gui.html")
-
-
-        proveri_postojanje(trie, "123345324")
-        proveri_postojanje(trie, "is")
+    #     print("Ucitavanje za trie(1) ili ucitavanje za graph(2):")
+    #     k = input(">>>>>>")
+    #     if int(k) == 1:
+    #         ucitaj_fajlove2(adresaCustom, root, parser)
+    #     elif int(k) == 2:
+    #         ucitaj_fajlove(adresaCustom, graph, vertices)
+    #     else:
+    #         print("uneta je nepoznata vrednost!")
+    # else:
+    #     ret = parser.parse("/home/hal9000/OISISI_python_projekat/test-skup/python-2.7.7-docs-html/faq/index.html")
+    #     reci = ret[1]
+    #     for rec in reci:
+    #         trie.add_word(rec.lower(), "index.html")
+    #
+    #     # if (trie.does_word_exist("123456789")):
+    #
+    #     ret1 = parser.parse("/home/hal9000/OISISI_python_projekat/test-skup/python-2.7.7-docs-html/faq/gui.html")
+    #     reci1 = ret1[1]
+    #     for rec in reci1:
+    #         trie.add_word(rec.lower(), "gui.html")
+    #
+    #
+    #     proveri_postojanje(trie, "123345324")
+    #     proveri_postojanje(trie, "is")
 
 
     """
