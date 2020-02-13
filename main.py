@@ -17,11 +17,19 @@ def napravi_cvorove(file_path, graph, vertices):
             vertices[putanja] = graph.insert_vertex(putanja)
 
 
-def napravi_veze(vert, edg, graph, veritces):
+def napravi_veze(vert, edg, graph, vertices):
     global i
     for v in edg:
         if v.endswith("html") or v.endswith("htm"):
-            graph.insert_edge(vert, vertices[v], i)  # hash(vert) + hash(vertices[v]))
+            lok_adresa = str(v).split("/")
+            v = "test-skup"
+            prodji = False
+            for l in lok_adresa:
+                if prodji:
+                    v = v + "/" + l
+                if l == "test-skup":
+                    prodji = True
+            graph.insert_edge(vert, vertices[v], i)
             i = i + 10
 
 
@@ -55,6 +63,9 @@ def proveri_postojanje(trie, word):
 
 if __name__ == "__main__":
 
+    parser = Parser()
+    graph = Graph(True)
+    vertices = {}
     petlja = True
     korenski_dir = "test-skup"
     while petlja:
@@ -99,4 +110,13 @@ if __name__ == "__main__":
             else:
                 print("#POGRESAN UNOS !!!")
 
-    print("Izabrani direktorijum:", korenski_dir)
+    print("~~~Ucitavanje podataka~~~")
+    if korenski_dir == 'test-skup':
+        napravi_cvorove("test-skup", graph, vertices)
+    else:
+        dir = korenski_dir.split("/")
+        napravi_cvorove("test-skup" + "/" + str(dir[1]), graph, vertices)
+
+    for element in graph.vertices():
+        edg = parser.parse(str(element))
+        napravi_veze(element, edg[0], graph, vertices)
