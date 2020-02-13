@@ -53,6 +53,7 @@ class Tree(object):
             print(fajls)
             return curr_node.originFile
 
+
     def is_empty(self):
         return self.root is None
 
@@ -62,33 +63,7 @@ class Tree(object):
         else:
             return 1 + self.depth(x.parent)
 
-    def height(self, x):
-        if x.is_leaf():
-            return 0
-        else:
-            return 1 + max(self.height(c) for c in x.children)
 
-    def preorder(self, x):
-        if not self.is_empty():
-            print(x.letter)
-            for c in x.children:
-                self.preorder(c)
-
-    def postorder(self, x):
-        if not self.is_empty():
-            for c in x.children:
-                self.postorder(c)
-            print(x.data)
-
-    def breadth_first(self):
-        to_visit = Queue()
-        to_visit.enqueue(self.root)
-        while not to_visit.is_empty():
-            e = to_visit.dequeue()
-            print(e.data)
-
-            for c in e.children:
-                to_visit.enqueue(c)
 
     def __iter__(self):
         to_visit = Queue()

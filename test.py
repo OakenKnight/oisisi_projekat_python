@@ -1,11 +1,14 @@
 from parser import Parser
 from graph import Graph
 from tree import Tree
-from treeNode import TreeNode
 import os
+from lista import lista_bez_duplikata
+import upit
 
 i = 10
 l = 0
+lista_dokumenata=[]
+
 
 def ucitaj_fajlove(file_path, graph, vertices):
     fajlovi = os.listdir(file_path)
@@ -26,14 +29,16 @@ def napravi_veze(vert, edg, graph, veritces):
 
 
 def ucitaj_fajlove2(file_path, trie, parser):
+    global lista_dokumenata
+
     fajlovi = os.listdir(file_path)
     for fajl in fajlovi:
-        putanja = file_path + "/" + fajl
+        putanja = file_path + "/" + fajl #treba prepraviti da se omoguci i win verzija, pa se to onda radi sa join
         if os.path.isdir(putanja):
             ucitaj_fajlove2(putanja, trie, parser)
-        elif fajl.endswith("html"):
+        elif fajl.endswith("html") or fajl.endswith("htm"):
             parseHtml(file_path, trie, parser, fajl)
-
+            lista_dokumenata.append(fajl)
 
 def parseHtml(file_path, trie, parser, fajl):
     global l
@@ -63,7 +68,7 @@ if __name__ == "__main__":
     vertices = {}
     radovanov_root = "/home/radovan/Documents/python/Projekat_OISISI/python-2.7.7-docs-html"
     aleksandrov_root = "/home/hal9000/OISISI_python_projekat/test-skup/python-2.7.7-docs-html"
-
+    string = upit.parsiraj_upit("not java")
     print("Izaberite korisnika:")
     print("1. Radovan")
     print("2. Aleksandar")
@@ -84,8 +89,18 @@ if __name__ == "__main__":
         k = input(">>>>>>")
         if int(k) == 1:
             ucitaj_fajlove2(aleksandrov_root, trie, parser)
-            proveri_postojanje(trie, "APADRAPA")
-            print(l)
+
+            while True:
+
+                querry=input("Unesite upit:")
+                print(querry)
+                print(l)
+                string = upit.parsiraj_upit(querry)
+                print(string)
+                doc_list = upit.upitaj(trie,string[1],string[2],string[0],lista_dokumenata)
+                #print(doc_list)
+
+
         elif int(k) == 2:
             ucitaj_fajlove(aleksandrov_root, graph, vertices)
         else:
@@ -104,6 +119,7 @@ if __name__ == "__main__":
 
         print("Ucitavanje za trie(1) ili ucitavanje za graph(2):")
         k = input(">>>>>>")
+
         if int(k) == 1:
             ucitaj_fajlove2(adresaCustom, root, parser)
         elif int(k) == 2:
