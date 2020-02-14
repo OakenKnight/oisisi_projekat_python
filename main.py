@@ -11,7 +11,7 @@ i = 10
 l = 0
 lista_dokumenata=[] #moze da se ubaci u main i da se odatle poziva
 
-
+def
 
 def napravi_cvorove_i_drvo(file_path, graph, vertices, parser, trie, lista_dokumenata):
     fajlovi = os.listdir(file_path)
