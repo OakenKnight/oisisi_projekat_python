@@ -1,3 +1,4 @@
+
 import upit
 from parser import Parser
 from graph import Graph
@@ -9,15 +10,16 @@ from sort import quick_sort
 i = 10
 l = 0
 lista_dokumenata=[] #moze da se ubaci u main i da se odatle poziva
-def napravi_cvorove(file_path, graph, vertices):
+def napravi_cvorove_i_drvo(file_path, graph, vertices, parser, trie, lista_dokumenata):
     fajlovi = os.listdir(file_path)
     for fajl in fajlovi:
-        putanja = file_path + "/" + fajl
+        putanja=os.path.join(file_path, fajl)
         if os.path.isdir(putanja):
-            napravi_cvorove(putanja, graph, vertices)
+            napravi_cvorove_i_drvo(putanja, graph, vertices, parser,trie ,lista_dokumenata)
         elif fajl.endswith("html") or fajl.endswith("htm"):
             vertices[putanja] = graph.insert_vertex(putanja)
-            #moze da se doda i ovde parseHtml
+            parseHtml(file_path, trie, parser, fajl)
+            lista_dokumenata.append(putanja)
 
 def napravi_veze(vert, edg, graph, vertices):
     global i
@@ -75,7 +77,7 @@ if __name__ == "__main__":
     trie = Tree()
     root = trie.root
 
-
+    lista_dokumenata=[]
     vertices = {}
     petlja = True
     korenski_dir = "test-skup"
@@ -122,19 +124,16 @@ if __name__ == "__main__":
                 print("#Nepostojeca komanda !!!")
 
 
-    print("Loading graph....")
-    if korenski_dir == 'test-skup':
-        napravi_cvorove("test-skup", graph, vertices)
-    else:
-        dir = korenski_dir.split("/")
-        napravi_cvorove("test-skup" + "/" + str(dir[1]), graph, vertices)
+    print("Loading graph and trie....")
+
+    napravi_cvorove_i_drvo(korenski_dir,graph,vertices,parser,trie,lista_dokumenata)
 
     for element in graph.vertices():
-        edg = parser.parse(str(element))
-        napravi_veze(element, edg[0], graph, vertices)
+         edg = parser.parse(str(element))
+         napravi_veze(element, edg[0], graph, vertices)
 
-    print("Loading trie....")
-    napravi_drvo(korenski_dir,trie,parser)
+    # print("Loading trie....")
+    napravi_cvorove_i_drvo(korenski_dir,graph,vertices,parser,trie,lista_dokumenata)
 
     userInput = 1
     petlja = True
