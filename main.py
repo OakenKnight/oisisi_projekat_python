@@ -103,7 +103,7 @@ def izaberi_direktorijum():
                 i = i + 1
         if i == 1:
             print("#Trenutni direktorijum nema poddirektorijume.")
-            print("1.Povratak u prethodni direktorijum\n2.Ostanak u trenutnom direktorijumu")
+            print("#Za povratak u prethodni direktorijum unesite 1\n#Za ostanak u trenutnom direktorijumu unesite 2")
             unos = input(">>>>")
             try:
                 uneseno = int(unos)
