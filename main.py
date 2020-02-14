@@ -10,10 +10,11 @@ from sort import quick_sort
 i = 10
 l = 0
 lista_dokumenata=[] #moze da se ubaci u main i da se odatle poziva
+
 def napravi_cvorove_i_drvo(file_path, graph, vertices, parser, trie, lista_dokumenata):
     fajlovi = os.listdir(file_path)
     for fajl in fajlovi:
-        putanja=os.path.join(file_path, fajl)
+        putanja = os.path.join(file_path, fajl)
         if os.path.isdir(putanja):
             napravi_cvorove_i_drvo(putanja, graph, vertices, parser,trie ,lista_dokumenata)
         elif fajl.endswith("html") or fajl.endswith("htm"):
@@ -24,17 +25,25 @@ def napravi_cvorove_i_drvo(file_path, graph, vertices, parser, trie, lista_dokum
 def napravi_veze(vert, edg, graph, vertices):
     global i
     for v in edg:
-        if v.endswith("html") or v.endswith("htm"):
-            lok_adresa = str(v).split("/")
-            v = "test-skup"
-            prodji = False
-            for l in lok_adresa:
-                if prodji:
-                    v = v + "/" + l
-                if l == "test-skup":
-                    prodji = True
-            graph.insert_edge(vert, vertices[v], i)
-            i = i + 10
+            if v.endswith("html") or v.endswith("htm"):
+                if "/" in v:
+                    slash = "/"
+                elif "\\" in v:
+                    slash = "\\"
+                else:
+                    print("Nesto nije u redu sa adresom!!!")
+                    print("Veze u grafu nisu uspesno napravljene!!!")
+                lok_adresa = str(v).split(slash)
+                v = "test-skup"
+                prodji = False
+                for l in lok_adresa:
+                    if prodji:
+                        v = v + slash + l
+                    if l == "test-skup":
+                        prodji = True
+            if vertices.__contains__(v):
+                graph.insert_edge(vert, vertices[v], i)
+                i = i + 10
 
 
 def napravi_drvo(file_path, trie, parser):
@@ -70,71 +79,60 @@ def proveri_postojanje(trie, word):
         lista = trie.find_word(word.lower())
         print(lista)
 
-
-if __name__ == "__main__":
-    parser = Parser()
-    graph = Graph(True)
-    trie = Tree()
-    root = trie.root
-
-    lista_dokumenata=[]
-    vertices = {}
+def izaberi_direktorijum():
     petlja = True
     korenski_dir = "test-skup"
+    if "/" in os.path.abspath("test-skup"):
+        slash = "/"
+    elif "\\" in os.path.abspath("test-skup"):
+        slash = "\\"
+    else:
+        print("Nesto ne valja sa adresom!!!")
     while petlja:
-            direktorijumi = os.listdir(korenski_dir)
-            print("Dostupni direktorijumi:")
-            i = 1
-            poddirektorijumi = []
-            for dir in direktorijumi:
-                putanja = korenski_dir + "/" + dir
-                if os.path.isdir(putanja):
-                    poddirektorijumi.append(dir)
-                    print(i, ".", dir)
-                    i = i + 1
-            if i == 1:
-                print("#Trenutni direktorijum nema poddirektorijume.")
-                print("1.Povratak u prethodni direktorijum\n2.Ostanak u trenutnom direktorijumu")
-                unos = input(">>>>")
-                if int(unos) == 1:
-                    st = korenski_dir.split("/")
-                    duzina_poslednjeg = len(st[len(st) - 1]) + 1
-                    korenski_dir = korenski_dir[: -duzina_poslednjeg]
-                    continue
-                elif int(unos) == 2:
-                    petlja = False
-                    print("#Izabrali ste direktorijum: ", str(korenski_dir))
-                    continue
-            print("#Izaberite broj direktorijuma\n#Za povratak u prethodni direktorijum unesite -1\n#Za ostanak u trenutnom direktorijumu unesite 0")
+        direktorijumi = os.listdir(korenski_dir)
+        print("Dostupni direktorijumi:")
+        i = 1
+        poddirektorijumi = []
+        for dir in direktorijumi:
+            putanja = korenski_dir + slash + dir
+            if os.path.isdir(putanja):
+                poddirektorijumi.append(dir)
+                print(i, ".", dir)
+                i = i + 1
+        if i == 1:
+            print("#Trenutni direktorijum nema poddirektorijume.")
+            print("1.Povratak u prethodni direktorijum\n2.Ostanak u trenutnom direktorijumu")
             unos = input(">>>>")
-            if int(unos) < i and int(unos) > 0:
-                korenski_dir = str(korenski_dir) + "/" + poddirektorijumi[int(unos) - 1]
-            elif int(unos) == -1:
-                st = korenski_dir.split("/")
-                if len(st) == 1:
-                    print("Nalazite se u prvom direktorijumu!!!(Nema 'nadredjenih' direktorijuma)")
-                    continue
+            if int(unos) == 1:
+                st = korenski_dir.split(slash)
                 duzina_poslednjeg = len(st[len(st) - 1]) + 1
                 korenski_dir = korenski_dir[: -duzina_poslednjeg]
                 continue
-            elif int(unos) == 0:
-                print("#Izabrali ste direktorijum: ", str(korenski_dir))
+            elif int(unos) == 2:
                 petlja = False
-            else:
-                print("#Nepostojeca komanda !!!")
+                print("#Izabrali ste direktorijum: ", str(korenski_dir))
+                continue
+        print(
+            "#Izaberite broj direktorijuma\n#Za povratak u prethodni direktorijum unesite -1\n#Za ostanak u trenutnom direktorijumu unesite 0")
+        unos = input(">>>>")
+        if int(unos) < i and int(unos) > 0:
+            korenski_dir = str(korenski_dir) + slash + poddirektorijumi[int(unos) - 1]
+        elif int(unos) == -1:
+            st = korenski_dir.split(slash)
+            if len(st) == 1:
+                print("Nalazite se u prvom direktorijumu!!!(Nema 'nadredjenih' direktorijuma)")
+                continue
+            duzina_poslednjeg = len(st[len(st) - 1]) + 1
+            korenski_dir = korenski_dir[: -duzina_poslednjeg]
+            continue
+        elif int(unos) == 0:
+            print("#Izabrali ste direktorijum: ", str(korenski_dir))
+            petlja = False
+        else:
+            print("#Nepostojeca komanda !!!")
+    return korenski_dir
 
-
-    print("Loading graph and trie....")
-
-    napravi_cvorove_i_drvo(korenski_dir,graph,vertices,parser,trie,lista_dokumenata)
-
-    for element in graph.vertices():
-         edg = parser.parse(str(element))
-         napravi_veze(element, edg[0], graph, vertices)
-
-    # print("Loading trie....")
-    napravi_cvorove_i_drvo(korenski_dir,graph,vertices,parser,trie,lista_dokumenata)
-
+def pretrazivanje_reci_i_prikaz():
     userInput = 1
     petlja = True
     while petlja:
@@ -142,15 +140,15 @@ if __name__ == "__main__":
         print("0 - Exit")
         userInput = input(">>>>>>>>")
         if int(userInput) == 1:
-            querry=input("Unesite rec za pretrazivanje: ")
+            querry = input("Unesite rec za pretrazivanje: ")
 
-            ret_querry=upit.parsiraj_upit(querry)
-            doc_list=upit.upitaj(trie,ret_querry[1],ret_querry[2],ret_querry[0],lista_dokumenata)
+            ret_querry = upit.parsiraj_upit(querry)
+            doc_list = upit.upitaj(trie, ret_querry[1], ret_querry[2], ret_querry[0], lista_dokumenata)
 
             print(doc_list)
+            print(doc_list.nmb_of_element())
 
-            # doc_list = [korenski_dir + "/" + doc for doc in doc_list]
-            # quick_sort(doc_list, 0, len(doc_list) - 1, graph, vertices)
+            quick_sort(doc_list, 0, doc_list.nmb_of_element() - 1, graph, vertices)
             i = 1
             print("---------------------------------------------------------------")
             print("~~~~~~~~Trazena rec se pojavljuje u sledecim stranicama~~~~~~~~")
@@ -167,4 +165,24 @@ if __name__ == "__main__":
 
         else:
             print("Nepoznata komanda")
+
+if __name__ == "__main__":
+    parser = Parser()
+    graph = Graph(True)
+    trie = Tree()
+    root = trie.root
+    lista_dokumenata=[]
+    vertices = {}
+    korenski_dir = izaberi_direktorijum()
+
+    print("Loading graph and trie....")
+
+    napravi_cvorove_i_drvo(korenski_dir,graph,vertices,parser,trie,lista_dokumenata)
+
+    for element in graph.vertices():
+         edg = parser.parse(str(element))
+         napravi_veze(element, edg[0], graph, vertices)
+
+    pretrazivanje_reci_i_prikaz()
+
 

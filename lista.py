@@ -37,6 +37,11 @@ class lista_bez_duplikata():
             lista1.append(item)
 
         return lista1
+    def nmb_of_element(self):
+        i = 0
+        for elem in self.list:
+            i += 1
+        return i
 
     def remove(self,item):
         for elem in self.list:
