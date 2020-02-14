@@ -11,6 +11,8 @@ i = 10
 l = 0
 lista_dokumenata=[] #moze da se ubaci u main i da se odatle poziva
 
+
+
 def napravi_cvorove_i_drvo(file_path, graph, vertices, parser, trie, lista_dokumenata):
     fajlovi = os.listdir(file_path)
     for fajl in fajlovi:
@@ -26,9 +28,9 @@ def napravi_veze(vert, edg, graph, vertices):
     global i
     for v in edg:
             if v.endswith("html") or v.endswith("htm"):
-                if "/" in v:
+                if "/" in os.path.abspath(v):
                     slash = "/"
-                elif "\\" in v:
+                elif "\\" in os.path.abspath(v):
                     slash = "\\"
                 else:
                     print("Nesto nije u redu sa adresom!!!")
@@ -38,7 +40,7 @@ def napravi_veze(vert, edg, graph, vertices):
                 prodji = False
                 for l in lok_adresa:
                     if prodji:
-                        v = v + slash + l
+                        v = os.path.join(v,l)
                     if l == "test-skup":
                         prodji = True
             if vertices.__contains__(v):
@@ -94,7 +96,7 @@ def izaberi_direktorijum():
         i = 1
         poddirektorijumi = []
         for dir in direktorijumi:
-            putanja = korenski_dir + slash + dir
+            putanja = os.path.join(korenski_dir, dir)
             if os.path.isdir(putanja):
                 poddirektorijumi.append(dir)
                 print(i, ".", dir)
@@ -116,7 +118,7 @@ def izaberi_direktorijum():
             "#Izaberite broj direktorijuma\n#Za povratak u prethodni direktorijum unesite -1\n#Za ostanak u trenutnom direktorijumu unesite 0")
         unos = input(">>>>")
         if int(unos) < i and int(unos) > 0:
-            korenski_dir = str(korenski_dir) + slash + poddirektorijumi[int(unos) - 1]
+            korenski_dir = os.path.join(str(korenski_dir), poddirektorijumi[int(unos) - 1])
         elif int(unos) == -1:
             st = korenski_dir.split(slash)
             if len(st) == 1:
