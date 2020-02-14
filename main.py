@@ -103,23 +103,34 @@ def izaberi_direktorijum():
                 i = i + 1
         if i == 1:
             print("#Trenutni direktorijum nema poddirektorijume.")
-            print("1.Povratak u prethodni direktorijum\n2.Ostanak u trenutnom direktorijumu")
+            print("#Za povratak u prethodni direktorijum unesite 1\n#Za ostanak u trenutnom direktorijumu unesite 2")
             unos = input(">>>>")
-            if int(unos) == 1:
+            try:
+                uneseno = int(unos)
+            except ValueError:
+                print("Nije unesen broj! Molimo Vas pokusajte ponovo!")
+                continue
+            if uneseno == 1:
                 st = korenski_dir.split(slash)
                 duzina_poslednjeg = len(st[len(st) - 1]) + 1
                 korenski_dir = korenski_dir[: -duzina_poslednjeg]
                 continue
-            elif int(unos) == 2:
+            elif uneseno == 2:
                 petlja = False
                 print("#Izabrali ste direktorijum: ", str(korenski_dir))
                 continue
         print(
             "#Izaberite broj direktorijuma\n#Za povratak u prethodni direktorijum unesite -1\n#Za ostanak u trenutnom direktorijumu unesite 0")
         unos = input(">>>>")
-        if int(unos) < i and int(unos) > 0:
+        try:
+            uneseno = int(unos)
+        except ValueError:
+            print("Nije unesen broj! Molimo Vas pokusajte ponovo!")
+            continue
+
+        if uneseno < i and uneseno > 0:
             korenski_dir = os.path.join(str(korenski_dir), poddirektorijumi[int(unos) - 1])
-        elif int(unos) == -1:
+        elif uneseno == -1:
             st = korenski_dir.split(slash)
             if len(st) == 1:
                 print("Nalazite se u prvom direktorijumu!!!(Nema 'nadredjenih' direktorijuma)")
@@ -127,7 +138,7 @@ def izaberi_direktorijum():
             duzina_poslednjeg = len(st[len(st) - 1]) + 1
             korenski_dir = korenski_dir[: -duzina_poslednjeg]
             continue
-        elif int(unos) == 0:
+        elif uneseno == 0:
             print("#Izabrali ste direktorijum: ", str(korenski_dir))
             petlja = False
         else:
