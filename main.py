@@ -8,7 +8,7 @@ from sort import quick_sort
 
 i = 10
 l = 0
-lista_dokumenata=[]
+lista_dokumenata=[] #moze da se ubaci u main i da se odatle poziva
 def napravi_cvorove(file_path, graph, vertices):
     fajlovi = os.listdir(file_path)
     for fajl in fajlovi:
@@ -17,7 +17,7 @@ def napravi_cvorove(file_path, graph, vertices):
             napravi_cvorove(putanja, graph, vertices)
         elif fajl.endswith("html") or fajl.endswith("htm"):
             vertices[putanja] = graph.insert_vertex(putanja)
-
+            #moze da se doda i ovde parseHtml
 
 def napravi_veze(vert, edg, graph, vertices):
     global i
@@ -40,24 +40,25 @@ def napravi_drvo(file_path, trie, parser):
 
     fajlovi = os.listdir(file_path)
     for fajl in fajlovi:
-        putanja = file_path + "/" + fajl
+       # putanja = file_path + "/" + fajl
         putanja1=os.path.join(file_path, fajl)
         #print(putanja1)
         if os.path.isdir(putanja1):
-            napravi_drvo(putanja, trie, parser)
-        elif fajl.endswith("html"):
+            napravi_drvo(putanja1, trie, parser)
+
+        elif fajl.endswith("html") or fajl.endswith("htm"):
             parseHtml(file_path, trie, parser, fajl)
-            lista_dokumenata.append(fajl)
+            lista_dokumenata.append(putanja1)
 
 def parseHtml(file_path, trie, parser, fajl):
     global l
     l = l + 1
-    putanja = file_path + "/" + fajl
+    #putanja = file_path + "/" + fajl
     putanja1=os.path.join(file_path,fajl)
     ret = parser.parse(putanja1)
     words = ret[1]
     for word in words:
-        trie.add_word(word.lower(), fajl)
+        trie.add_word(word.lower(), putanja1)
 
 
 def proveri_postojanje(trie, word):
@@ -149,8 +150,8 @@ if __name__ == "__main__":
 
             print(doc_list)
 
-            doc_list = [korenski_dir + "/" + doc for doc in doc_list]
-            quick_sort(doc_list, 0, len(doc_list) - 1, graph, vertices)
+            # doc_list = [korenski_dir + "/" + doc for doc in doc_list]
+            # quick_sort(doc_list, 0, len(doc_list) - 1, graph, vertices)
             i = 1
             print("---------------------------------------------------------------")
             print("~~~~~~~~Trazena rec se pojavljuje u sledecim stranicama~~~~~~~~")
@@ -162,9 +163,9 @@ if __name__ == "__main__":
                 i += 1
             print("---------------------------------------------------------------")
 
-
         elif int(userInput) == 0:
             petlja = False
+
         else:
             print("Nepoznata komanda")
 
