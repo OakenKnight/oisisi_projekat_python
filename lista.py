@@ -1,6 +1,10 @@
-class lista_bez_duplikata():
+class lista_bez_duplikata(object):
     def __init__(self):
-        self.list = []
+        self.list = list()
+
+    def __iter__(self):
+        for elem in self.list:
+            yield elem
 
     def check_element(self, element):
         for elem in self.list:
@@ -22,21 +26,19 @@ class lista_bez_duplikata():
     def __getitem__(self, index):
         return self.list[index]
 
-    def __contains__(self, item):
-        for elem in self.list:
-            if elem == item:
-                return False
-        return True
     def append(self,item):
         if self.list.__contains__(item) is False:
             self.list.append(item)
 
     def copy(self):
+
         lista1 = lista_bez_duplikata()
+
         for item in self.list:
             lista1.append(item)
 
         return lista1
+
     def nmb_of_element(self):
         i = 0
         for elem in self.list:

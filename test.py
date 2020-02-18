@@ -1,12 +1,14 @@
 from parser import Parser
 from graph import Graph
 from tree import Tree
+
 import os
 import upit
 
 i = 10
 l = 0
-lista_dokumenata=[]
+lista_dokumenata = []
+mapa = {}
 
 
 def ucitaj_fajlove(file_path, graph, vertices):
@@ -27,26 +29,37 @@ def napravi_veze(vert, edg, graph, veritces):
             i = i + 10
 
 
-def ucitaj_fajlove2(file_path, trie, parser):
-   # global lista_dokumenata
+def napravi_mapu(file_path, parser):
+    # global lista_dokumenata
 
     fajlovi = os.listdir(file_path)
     for fajl in fajlovi:
         putanja = file_path + "/" + fajl
         if os.path.isdir(putanja):
-            ucitaj_fajlove2(putanja, trie, parser)
+            napravi_mapu(putanja, parser)
         elif fajl.endswith("html") or fajl.endswith("htm"):
-            parseHtml(file_path, trie, parser, fajl)
+            # parseHtml(file_path, trie, parser, fajl)
             lista_dokumenata.append(fajl)
 
-def parseHtml(file_path, trie, parser, fajl):
+
+def ucitaj_fajlove2(file_path, trie, parser, mapa):
+    fajlovi = os.listdir(file_path)
+    for fajl in fajlovi:
+        putanja = file_path + "/" + fajl
+        if os.path.isdir(putanja):
+            ucitaj_fajlove2(putanja, trie, parser, mapa)
+        elif fajl.endswith("html") or fajl.endswith("htm"):
+            parseHtml(file_path, trie, parser, fajl, mapa)
+
+
+def parseHtml(file_path, trie, parser, fajl, mapa):
     global l
     l = l + 1
     putanja = file_path + "/" + fajl
     ret = parser.parse(putanja)
     words = ret[1]
     for word in words:
-        trie.add_word(word.lower(), fajl)
+        trie.add_word(word.lower(), fajl, mapa)
 
 
 def proveri_postojanje(trie, word):
@@ -55,28 +68,32 @@ def proveri_postojanje(trie, word):
 
     else:
         lista = trie.does_word_exist(word)[1]
-       # print(lista)
+        # print(lista)
         # print(trie.find_word(word))
-        lista1=trie.find_word(word)
+        lista1 = trie.find_word(word)
         print(lista1)
         for elem in lista1:
             print(elem)
+
+
+def getMap():
+    return mapa
+
+
 if __name__ == "__main__":
-
-
-
 
     parser = Parser()
     graph = Graph(True)
-    trie = Tree()
+    map = {}
+    trie = Tree(mapa)
 
     root = trie.root
     # trie.root=root
 
     vertices = {}
     radovanov_root = "/home/radovan/Documents/python/Projekat_OISISI/python-2.7.7-docs-html"
-    aleksandrov_root = "/home/hal9000/OISISI_python_projekat/test-skup/python-2.7.7-docs-html/_images"
-    string = upit.parsiraj_upit("not java")
+    aleksandrov_root = "/home/hal9000/OISISI_python_projekat/test-skup/python-2.7.7-docs-html"
+    string = upit.parse("not java")
     print("Izaberite korisnika:")
     print("1. Radovan")
     print("2. Aleksandar")
@@ -96,17 +113,29 @@ if __name__ == "__main__":
         print("Ucitavanje za trie(1) ili ucitavanje za graph(2):")
         k = input(">>>>>>")
         if int(k) == 1:
-            ucitaj_fajlove2(aleksandrov_root, trie, parser)
-            proveri_postojanje(trie,"python")
-            while True:
+            mapa = {}
+            napravi_mapu(aleksandrov_root, parser)
+            for dok in lista_dokumenata:
+                mapa[dok] = 0
 
-                querry=input("Unesite upit:")
+            trie2 = Tree(mapa)
+            ucitaj_fajlove2(aleksandrov_root, trie2, parser, mapa)
+
+            # proveri_postojanje(trie,"python")
+            while True:
+                querry = input("Unesite upit:")
                 print(querry)
                 print(l)
-                string = upit.parsiraj_upit(querry)
+                string = upit.parse(querry)
                 print(string)
-                doc_list = upit.upitaj(trie,string[1],string[2],string[0],lista_dokumenata)
+
+                docs = upit.upitaj(trie2, string[1], string[2], string[0], lista_dokumenata)
+                doc_list = docs[0]
+                ponavljanja = docs[1]
                 print(doc_list)
+                print(ponavljanja.keys())
+                print(ponavljanja)
+
 
 
         elif int(k) == 2:
@@ -116,14 +145,12 @@ if __name__ == "__main__":
     elif int(adresa) == 3:
         print("Unesite adresu:")
 
-        adresaCustom=input(">>>>>")
-        ucitaj_fajlove(adresaCustom,graph,vertices)
-    #
-    # for element in graph.vertices():
-    #     edg = parser.parse(str(element))
-    #     napravi_veze(element, edg[0], graph, vertices)
-
-
+        adresaCustom = input(">>>>>")
+        ucitaj_fajlove(adresaCustom, graph, vertices)
+        #
+        # for element in graph.vertices():
+        #     edg = parser.parse(str(element))
+        #     napravi_veze(element, edg[0], graph, vertices)
 
         print("Ucitavanje za trie(1) ili ucitavanje za graph(2):")
         k = input(">>>>>>")
@@ -143,12 +170,10 @@ if __name__ == "__main__":
         ret1 = parser.parse("/home/hal9000/OISISI_python_projekat/test-skup/python-2.7.7-docs-html/faq/gui.html")
         reci1 = ret1[1]
         for rec in reci1:
-             trie.add_word(rec.lower(), "gui.html")
-    
-    
+            trie.add_word(rec.lower(), "gui.html")
+
         proveri_postojanje(trie, "123345324")
         proveri_postojanje(trie, "is")
-
 
     """
     for element in graph.vertices():

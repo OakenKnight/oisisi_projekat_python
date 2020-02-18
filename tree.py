@@ -1,58 +1,76 @@
 from queue import Queue
+
 from treeNode import TreeNode
 from lista import lista_bez_duplikata
 
 
 class Tree(object):
 
-    def __init__(self):
-        self.root = TreeNode("*")
+    def __init__(self,mapa):
+        self.root = TreeNode("*",mapa)
 
-    def add_word(self, word, origin_file):
+    def add_word(self, word, origin_file,mapa):
         torka = self.does_word_exist(word)
         files = torka[1]
+        mapa = torka[2]
+        #print(mapa)
+        #print(word, mapa)
         if files is None:
             files = lista_bez_duplikata()
+            #mapa[origin_file] = 0
+            #print(mapa)
 
-        if torka[0] is True:  # znaci da postoji ta rec vec
+        if torka[0] is True:
             files.add_element(origin_file)
+            value = mapa.get(origin_file)
+            value1 = mapa[origin_file]
+            #print(value, "#")
+            #print(value1)
+            #print(value)
 
+            mapa[origin_file] = value1 + 1
+                 #print(mapa)
             return
 
         curr_node = self.root
 
         for letter in word:
             if letter not in curr_node.children:
-                curr_node.children[letter] = TreeNode(letter)
+                curr_node.children[letter] = TreeNode(letter,mapa)
 
             curr_node = curr_node.children[letter]
 
         curr_node.is_end_of_word = True
         files.add_element(origin_file)
         curr_node.originFile = files
+        value = mapa[origin_file]
+        curr_node.ponavljanje[origin_file] = value + 1
 
     def does_word_exist(self, word):
+
         curr_node = self.root
+        node = self.root
         for letter in word:
             if letter not in curr_node.children:
-                return False, None
+                return False, None, node.ponavljanje
             curr_node = curr_node.children[letter]
 
-        return True, curr_node.originFile
+        return True, curr_node.originFile, curr_node.ponavljanje
 
-    def find_word(self, word):
-        curr_node = self.root
-        lista = lista_bez_duplikata()
-
-        for letter in word:
-            if letter not in curr_node.children:
-                break
-
-            curr_node = curr_node.children[letter]
-        if curr_node.is_end_of_word is True:
-            lista = curr_node.originFile
-            return lista
-        return lista
+    # def find_word(self, word):
+    #     curr_node = self.root
+    #     lista = lista_bez_duplikata()
+    #
+    #     for letter in word:
+    #         if letter not in curr_node.children:
+    #             break
+    #
+    #         curr_node = curr_node.children[letter]
+    #
+    #     if curr_node.is_end_of_word is True:
+    #         lista = curr_node.originFile
+    #         return lista
+    #     return lista
 
     def is_empty(self):
         return self.root is None

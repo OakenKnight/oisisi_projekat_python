@@ -6,31 +6,44 @@ from treeNode import TreeNode
 import os
 from sort import quick_sort
 
-
 i = 10
 l = 0
-lista_dokumenata = []  # moze da se ubaci u main i da se odatle poziva
 
 
-def napravi_cvorove(file_path, graph, vertices):
+def napravi_cvorove(file_path, graph, vertices, lista_dokumenata, mapa):  # pravim mapu i listu
     fajlovi = os.listdir(file_path)
     for fajl in fajlovi:
         putanja = os.path.join(file_path, fajl)
+
         if os.path.isdir(putanja):
-            napravi_cvorove(putanja, graph, vertices)
+            napravi_cvorove(putanja, graph, vertices, lista_dokumenata, mapa)
         elif fajl.endswith("html") or fajl.endswith("htm"):
             vertices[putanja] = graph.insert_vertex(putanja)
+            mapa[putanja] = 0  # pravim mapu
+            lista_dokumenata.append(putanja)
 
 
-def napravi_veze_i_drvo(file_path, graph, vertices, parser, trie, lista_dokumenata):
+def napravi_veze_i_drvo(file_path, graph, vertices, parser, trie):
     fajlovi = os.listdir(file_path)
     for fajl in fajlovi:
         putanja = os.path.join(file_path, fajl)
+
         if os.path.isdir(putanja):
-            napravi_veze_i_drvo(putanja, graph, vertices, parser, trie, lista_dokumenata)
+            napravi_veze_i_drvo(putanja, graph, vertices, parser, trie)
         elif fajl.endswith("html") or fajl.endswith("htm"):
-            parseHtml(file_path, trie, parser, fajl, vertices, graph)
-            lista_dokumenata.append(putanja)
+            parseHtml(file_path, trie, parser, fajl, vertices, graph, mapa)
+
+
+def parseHtml(file_path, trie, parser, fajl, vertices, graph, mapa):
+    global l
+    l = l + 1
+    putanja1 = os.path.join(file_path, fajl)
+    ret = parser.parse(putanja1)
+    links = ret[0]
+    napravi_veze(vertices[putanja1], links, graph, vertices)
+    words = ret[1]
+    for word in words:
+        trie.add_word(word.lower(), putanja1, mapa)
 
 
 def napravi_veze(vert, edg, graph, vertices):
@@ -57,39 +70,12 @@ def napravi_veze(vert, edg, graph, vertices):
             i = i + 10
 
 
-# def napravi_drvo(file_path, trie, parser):
-#     global lista_dokumenata
-#
-#     fajlovi = os.listdir(file_path)
-#     for fajl in fajlovi:
-#        # putanja = file_path + "/" + fajl
-#         putanja1=os.path.join(file_path, fajl)
-#         #print(putanja1)
-#         if os.path.isdir(putanja1):
-#             napravi_drvo(putanja1, trie, parser)
-#
-#         elif fajl.endswith("html") or fajl.endswith("htm"):
-#             parseHtml(file_path, trie, parser, fajl)
-#             lista_dokumenata.append(putanja1)
-
-def parseHtml(file_path, trie, parser, fajl, vertices, graph):
-    global l
-    l = l + 1
-    putanja1 = os.path.join(file_path, fajl)
-    ret = parser.parse(putanja1)
-    links = ret[0]
-    napravi_veze(vertices[putanja1], links, graph, vertices)
-    words = ret[1]
-    for word in words:
-        trie.add_word(word.lower(), putanja1)
-
-
 def proveri_postojanje(trie, word):
     if trie.does_word_exist(word)[1] is None:
         print("Ne postoji ta rec!")
     else:
-        lista = trie.find_word(word.lower())
-        print(lista)
+        ret = trie.does_word_exist(word.lower())
+        print(ret[2].keys())
 
 
 def postoji_direktorijum(file_path):
@@ -195,27 +181,37 @@ def izaberi_direktorijum():
                 print("#Nepostojeca komanda !!!")
         return korenski_dir
 
+
 def promena_n():
     while True:
         print("Koliko stranica zelite da se prikaze odjednom(ceo broj):")
         unos = input(">>>>")
-        if int(unos) < 1:
+        try:
+            uneseno = int(unos)
+        except ValueError:
+            print("Nije unesen broj!")
+            continue
+        if uneseno < 1:
             print("Nemoguce je prikazati manje od 1 stranice!!!")
         else:
-            return int(unos)
+            return uneseno
 
-def ispis(doc,i):
+
+def ispis(doc, i):
     (outc, inc) = graph.get_edges(vertices[doc])
     print(i, ".", doc)
     print("\t\t-Broj stranica koje pokazuju na ovu stranicu:", len(inc))
     print("\t\t-Broj stranica na koje pokazuje ova stranica:", len(outc))
 
-def prikaz_rezultata(n,doc_list):
+
+def prikaz_rezultata(n, doc_list):
     petlja = True
     unos = 1
-    broj_stranica = int(doc_list.nmb_of_element()/n + 0.999)
-    print(broj_stranica)
+    broj_stranica = int(doc_list.nmb_of_element() / n + 0.999)
+    # print(broj_stranica)
+    # da li ovde treba da se unese zastita??
     while petlja:
+        # print(doc_list)
         for i in range((int(unos) - 1) * n, int(unos) * n):
             if i < doc_list.nmb_of_element():
                 ispis(doc_list[i], i + 1)
@@ -238,11 +234,17 @@ def prikaz_rezultata(n,doc_list):
         print("\n1 - Promena stranice:")
         print("2 - Pretrazi sledecu rec:")
         inp = input(">>>>")
-        if int(inp) == 1:
+        try:
+            uneseno = int(inp)
+        except ValueError:
+            print("Nije dobar unos! Unesite broj!")
+            continue
+        if uneseno == 1:
             unos = input("Broj stranice:\n>>>>")
+
+            # ne znam sta ti je ovo?
         else:
             break
-
 
 
 def pretrazivanje_reci_i_prikaz():
@@ -254,26 +256,38 @@ def pretrazivanje_reci_i_prikaz():
         print("2 - Promenite broj stranica koje ce biti prikazane odjednom (trenutno %d)" % n)
         print("0 - Exit")
         userInput = input(">>>>>>>>")
-        if int(userInput) == 1:
+
+        try:
+            user_inp = int(userInput)
+        except ValueError:
+            print("Nije unesen broj! Unesite opet!")
+            continue
+
+        if user_inp == 1:
             querry = input("Unesite rec za pretrazivanje: ")
 
-            ret_querry = upit.parsiraj_upit(querry)
-            doc_list = upit.upitaj(trie, ret_querry[1], ret_querry[2], ret_querry[0], lista_dokumenata)
+            ret_querry = upit.parse(querry)
+            ret = upit.upitaj(trie, ret_querry[1], ret_querry[2], ret_querry[0], lista_dokumenata)
+            doc_list = ret[0]
+            ponavljanja = ret[1]
+            # print(doc_list)
+            # print(ponavljanja.keys())
+            # print(ponavljanja)
 
-            #print(doc_list)
-            print(doc_list.nmb_of_element())
+            # print(doc_list.nmb_of_element())
+
             if doc_list.nmb_of_element() != 0:
                 quick_sort(doc_list, 0, doc_list.nmb_of_element() - 1, graph, vertices)
                 print("---------------------------------------------------------------")
                 print("~~~~~~~~Trazena rec se pojavljuje u sledecim stranicama~~~~~~~~")
-                prikaz_rezultata(n,doc_list)
+                prikaz_rezultata(n, doc_list)
                 print("---------------------------------------------------------------")
             else:
                 print("~~~~~~~~Trazena rec se ne pojavljuje ni u jednoj stranici izabranog direktorijuma~~~~~~~~")
 
-        elif int(userInput) == 0:
+        elif user_inp == 0:
             petlja = False
-        elif int(userInput) == 2:
+        elif user_inp == 2:
             n = promena_n()
 
         else:
@@ -283,14 +297,18 @@ def pretrazivanje_reci_i_prikaz():
 if __name__ == "__main__":
     parser = Parser()
     graph = Graph(True)
-    trie = Tree()
-    root = trie.root
+
     lista_dokumenata = []
     vertices = {}
+    mapa = {}
     korenski_dir = izaberi_direktorijum()
 
     print("Loading graph and trie....")
 
-    napravi_cvorove(korenski_dir, graph, vertices)
-    napravi_veze_i_drvo(korenski_dir, graph, vertices, parser, trie, lista_dokumenata)
+    napravi_cvorove(korenski_dir, graph, vertices, lista_dokumenata, mapa)
+
+    trie = Tree(mapa)
+    root = trie.root
+
+    napravi_veze_i_drvo(korenski_dir, graph, vertices, parser, trie)
     pretrazivanje_reci_i_prikaz()
