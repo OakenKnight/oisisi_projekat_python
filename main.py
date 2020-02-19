@@ -1,10 +1,12 @@
+import time
+
 import upit
 from parser import Parser
 from graph import Graph
 from tree import Tree
 from treeNode import TreeNode
 import os
-from sort import quick_sort
+from sort import *
 
 i = 10
 l = 0
@@ -45,18 +47,20 @@ def parseHtml(file_path, trie, parser, fajl, vertices, graph, mapa):
     for word in words:
         trie.add_word(word.lower(), putanja1, mapa)
 
+def win_or_lin():
+    if "/" in os.path.abspath("test-skup"):
+        slash = "/"
+    elif "\\" in os.path.abspath("test-skup"):
+        slash = "\\"
+    else:
+        print("Nesto ne valja sa adresom!!!")
+    return slash
 
 def napravi_veze(vert, edg, graph, vertices):
     global i
     for v in edg:
         if v.endswith("html") or v.endswith("htm"):
-            if "/" in os.path.abspath(v):
-                slash = "/"
-            elif "\\" in os.path.abspath(v):
-                slash = "\\"
-            else:
-                print("Nesto nije u redu sa adresom!!!")
-                print("Veze u grafu nisu uspesno napravljene!!!")
+            slash = win_or_lin()
             lok_adresa = str(v).split(slash)
             v = "test-skup"
             prodji = False
@@ -90,10 +94,11 @@ def rucno_unos_direktorijuma():
     print("Za odabir jednog od ponudjenih direktorijuma iz 'test-skup' direktorijuma unesite 2")
     unos = input(">>>>")
     adresa = ""
+    slash = win_or_lin()
     if int(unos) == 1:
         petlja = True
         while petlja:
-            print("Unesite adresu(npr. test-skup/.../.../...):")
+            print('Unesite adresu(npr. test-skup'+slash+'...'+slash+'...'+slash+'...):')
             adresa = input(">>>>")
             if "test-skup" in adresa:
                 if postoji_direktorijum(adresa):
@@ -119,12 +124,7 @@ def izaberi_direktorijum():
     else:
         petlja = True
         korenski_dir = "test-skup"
-        if "/" in os.path.abspath("test-skup"):
-            slash = "/"
-        elif "\\" in os.path.abspath("test-skup"):
-            slash = "\\"
-        else:
-            print("Nesto ne valja sa adresom!!!")
+        slash = win_or_lin()
         while petlja:
             direktorijumi = os.listdir(korenski_dir)
             print("Dostupni direktorijumi:")
@@ -197,14 +197,15 @@ def promena_n():
             return uneseno
 
 
-def ispis(doc, i):
-    (outc, inc) = graph.get_edges(vertices[doc])
+def ispis(doc, i, rang):
+    (inc, outg) = graph.get_in_out(vertices[doc])
     print(i, ".", doc)
-    print("\t\t-Broj stranica koje pokazuju na ovu stranicu:", len(inc))
-    print("\t\t-Broj stranica na koje pokazuje ova stranica:", len(outc))
+    print("\t\t-Rang stranice:", rang)
+    # print("\t\t-Broj stranica koje pokazuju na ovu stranicu:", len(inc))
+    # print("\t\t-Broj stranica na koje pokazuje ova stranica:", len(outg))
 
 
-def prikaz_rezultata(n, doc_list):
+def prikaz_rezultata(n, doc_list, rangovi):
     petlja = True
     unos = 1
     broj_stranica = int(doc_list.nmb_of_element() / n + 0.999)
@@ -214,7 +215,7 @@ def prikaz_rezultata(n, doc_list):
         # print(doc_list)
         for i in range((int(unos) - 1) * n, int(unos) * n):
             if i < doc_list.nmb_of_element():
-                ispis(doc_list[i], i + 1)
+                ispis(doc_list[i], i + 1, rangovi[doc_list[i]])
         print(">", end=" ")
         if broj_stranica < 11:
             for i in range(1, broj_stranica + 1):
@@ -241,10 +242,10 @@ def prikaz_rezultata(n, doc_list):
             continue
         if uneseno == 1:
             unos = input("Broj stranice:\n>>>>")
-
-            # ne znam sta ti je ovo?
-        else:
+        elif uneseno == 2:
             break
+        else:
+            print("Nepoznata komanda!!!")
 
 
 def pretrazivanje_reci_i_prikaz():
@@ -270,17 +271,17 @@ def pretrazivanje_reci_i_prikaz():
             ret = upit.upitaj(trie, ret_querry[1], ret_querry[2], ret_querry[0], lista_dokumenata)
             doc_list = ret[0]
             ponavljanja = ret[1]
-            # print(doc_list)
             # print(ponavljanja.keys())
-            # print(ponavljanja)
-
             # print(doc_list.nmb_of_element())
 
             if doc_list.nmb_of_element() != 0:
-                quick_sort(doc_list, 0, doc_list.nmb_of_element() - 1, graph, vertices)
+                start = time.time()
+                rang = rang_svih(ponavljanja,vertices,graph,doc_list)
+                quick_sort(doc_list, 0, doc_list.nmb_of_element() - 1, rang)
+                print(time.time()-start)
                 print("---------------------------------------------------------------")
                 print("~~~~~~~~Trazena rec se pojavljuje u sledecim stranicama~~~~~~~~")
-                prikaz_rezultata(n, doc_list)
+                prikaz_rezultata(n, doc_list, rang)
                 print("---------------------------------------------------------------")
             else:
                 print("~~~~~~~~Trazena rec se ne pojavljuje ni u jednoj stranici izabranog direktorijuma~~~~~~~~")

@@ -37,9 +37,9 @@ class Graph:
         self._validate_vertex(v)
         return self._outgoing[u].get(v)
 
-    def get_edges(self, v):
+    def get_in_out(self, v):
         self._validate_vertex(v)
-        return self._outgoing[v], self._incoming[v]
+        return self._incoming[v], self._outgoing
 
     def degree(self, v, outgoing=True):
         self._validate_vertex(v)

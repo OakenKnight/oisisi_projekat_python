@@ -119,7 +119,7 @@ def upitaj(tree, bin1, bin2, i, lista):
        # print(dif)
         for elem in dif.keys():
             if dif[elem] != 0:
-                print(elem,dif[elem])
+                 print(elem,dif[elem])
         ret_list = skupovne_operacije.and_op(lista1, lista2)
         new_dict = {}
         for elem in ret_list:
