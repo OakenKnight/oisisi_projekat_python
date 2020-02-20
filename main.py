@@ -155,30 +155,32 @@ def izaberi_direktorijum():
                     petlja = False
                     print("#Izabrali ste direktorijum: ", str(korenski_dir))
                     continue
-            print(
-                "#Izaberite broj direktorijuma\n#Za povratak u prethodni direktorijum unesite -1\n#Za ostanak u trenutnom direktorijumu unesite 0")
-            unos = input(">>>>")
-            try:
-                uneseno = int(unos)
-            except ValueError:
-                print("Nije unesen broj! Molimo Vas pokusajte ponovo!")
-                continue
-
-            if uneseno < i and uneseno > 0:
-                korenski_dir = os.path.join(str(korenski_dir), poddirektorijumi[int(unos) - 1])
-            elif uneseno == -1:
-                st = korenski_dir.split(slash)
-                if len(st) == 1:
-                    print("Nalazite se u prvom direktorijumu!!!(Nema 'nadredjenih' direktorijuma)")
+                else:
+                    print("Nepoznata komanda!!!")
+            elif i != 1:
+                print("#Izaberite broj direktorijuma\n#Za povratak u prethodni direktorijum unesite -1\n#Za ostanak u trenutnom direktorijumu unesite 0")
+                unos = input(">>>>")
+                try:
+                    uneseno = int(unos)
+                except ValueError:
+                    print("Nije unesen broj! Molimo Vas pokusajte ponovo!")
                     continue
-                duzina_poslednjeg = len(st[len(st) - 1]) + 1
-                korenski_dir = korenski_dir[: -duzina_poslednjeg]
-                continue
-            elif uneseno == 0:
-                print("#Izabrali ste direktorijum: ", str(korenski_dir))
-                petlja = False
-            else:
-                print("#Nepostojeca komanda !!!")
+
+                if uneseno < i and uneseno > 0:
+                    korenski_dir = os.path.join(str(korenski_dir), poddirektorijumi[int(unos) - 1])
+                elif uneseno == -1:
+                    st = korenski_dir.split(slash)
+                    if len(st) == 1:
+                        print("Nalazite se u prvom direktorijumu!!!(Nema 'nadredjenih' direktorijuma)")
+                        continue
+                    duzina_poslednjeg = len(st[len(st) - 1]) + 1
+                    korenski_dir = korenski_dir[: -duzina_poslednjeg]
+                    continue
+                elif uneseno == 0:
+                    print("#Izabrali ste direktorijum: ", str(korenski_dir))
+                    petlja = False
+                else:
+                    print("#Nepostojeca komanda !!!")
         return korenski_dir
 
 
@@ -209,7 +211,6 @@ def prikaz_rezultata(n, doc_list, rangovi):
     petlja = True
     unos = 1
     broj_stranica = int(doc_list.nmb_of_element() / n + 0.999)
-    # print(broj_stranica)
     # da li ovde treba da se unese zastita??
     while petlja:
         # print(doc_list)
@@ -234,6 +235,7 @@ def prikaz_rezultata(n, doc_list, rangovi):
         print("<", end=" ")
         print("\n1 - Promena stranice:")
         print("2 - Pretrazi sledecu rec:")
+        print("0 - Exit")
         inp = input(">>>>")
         try:
             uneseno = int(inp)
@@ -241,9 +243,24 @@ def prikaz_rezultata(n, doc_list, rangovi):
             print("Nije dobar unos! Unesite broj!")
             continue
         if uneseno == 1:
-            unos = input("Broj stranice:\n>>>>")
+            while(True):
+                unos = input("Broj stranice:\n>>>>")
+                try:
+                    unos = int(unos)
+                except ValueError:
+                    print("Nije dobar unos! Unesite ceo broj!")
+                    continue
+                if unos > broj_stranica or unos < 1:
+                    if broj_stranica == 1:
+                        print("Za unetu pretragu postoji samo jedna stranica")
+                    else:
+                        print("Izaberite stranicu iz opsega [1,%d]" % broj_stranica)
+                else:
+                    break
         elif uneseno == 2:
-            break
+            return False
+        elif uneseno == 0:
+            return True
         else:
             print("Nepoznata komanda!!!")
 
@@ -272,16 +289,18 @@ def pretrazivanje_reci_i_prikaz():
             doc_list = ret[0]
             ponavljanja = ret[1]
             # print(ponavljanja.keys())
-            # print(doc_list.nmb_of_element())
+            print(doc_list)
 
-            if doc_list.nmb_of_element() != 0:
+            if doc_list is not None:
                 start = time.time()
                 rang = rang_svih(ponavljanja,vertices,graph,doc_list)
                 quick_sort(doc_list, 0, doc_list.nmb_of_element() - 1, rang)
                 print(time.time()-start)
                 print("---------------------------------------------------------------")
                 print("~~~~~~~~Trazena rec se pojavljuje u sledecim stranicama~~~~~~~~")
-                prikaz_rezultata(n, doc_list, rang)
+                if prikaz_rezultata(n, doc_list, rang):
+                    break
+
                 print("---------------------------------------------------------------")
             else:
                 print("~~~~~~~~Trazena rec se ne pojavljuje ni u jednoj stranici izabranog direktorijuma~~~~~~~~")
