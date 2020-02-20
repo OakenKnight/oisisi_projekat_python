@@ -28,6 +28,7 @@ def izracunaj_rang(graph, vert, ponavljanja, arr):
     for o in inc:
         if not arr.check_element(str(o)):
             suma += ponavljanja[str(o)]
+
     return 0.3 * ponavljanja[str(vert)] + 0.2 * graph.count_of_incoming(vert) + 0.1 * suma
 
 def rang_svih(ponavljanja ,vertices ,graph ,arr):

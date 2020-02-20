@@ -125,7 +125,6 @@ def upitaj(tree, bin1, bin2, i, lista):
 
         #mozda popraviti
         dif = {k: mapa1.get(k, 0) + mapa2.get(k, 0) for k in set(mapa1) & set(mapa2)}
-
         ret_list = skupovne_operacije.and_op(lista1, lista2)
         new_dict = {}
         if ret_list is not None:
