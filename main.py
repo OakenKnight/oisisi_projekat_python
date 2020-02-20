@@ -200,7 +200,7 @@ def promena_n():
 def ispis(doc, i, rang):
     (inc, outg) = graph.get_in_out(vertices[doc])
     print(i, ".", doc)
-    print("\t\t-Rang stranice:", rang)
+    print("\t\t-Rang stranice:", int(rang))
     # print("\t\t-Broj stranica koje pokazuju na ovu stranicu:", len(inc))
     # print("\t\t-Broj stranica na koje pokazuje ova stranica:", len(outg))
 
