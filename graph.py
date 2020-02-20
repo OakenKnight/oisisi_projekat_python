@@ -10,10 +10,20 @@ class Graph:
         if v not in self._outgoing:
             raise ValueError('Vertex does not belong to this graph.')
 
+    #da li je usmereni graf
+    def is_directed(self):
+        return self._incoming is not self._outgoing
+
     # broj ulaznih cvorova
     def count_of_incoming(self, v):
         self._validate_vertex(v)
         return len(self._incoming[v])
+
+    #vraca vezu izmedju dva cvora
+    def get_edge(self, u, v):
+        self._validate_vertex(u)
+        self._validate_vertex(v)
+        return self._outgoing[u].get(v)
 
     # vraca ulazne i izlazne cvorove
     def get_in_out(self, v):
