@@ -42,7 +42,8 @@ def comp_op(lista1, lista2):  # svi elementi prve liste koji se ne poklapaju ni 
                     if elem1 == elem2:
                         ret.remove(elem1)
         else:
-            ret = lista1
+            for elem in lista1:
+                ret.append(elem)
     else:
         ret = None
     return ret
