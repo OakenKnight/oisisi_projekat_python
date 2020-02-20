@@ -288,8 +288,6 @@ def pretrazivanje_reci_i_prikaz():
             ret = upit.upitaj(trie, ret_querry[1], ret_querry[2], ret_querry[0], lista_dokumenata)
             doc_list = ret[0]
             ponavljanja = ret[1]
-            # print(ponavljanja.keys())
-            print(doc_list)
 
             if doc_list is not None:
                 if doc_list.nmb_of_element() == 0:

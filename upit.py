@@ -94,8 +94,12 @@ def upitaj(tree, bin1, bin2, i, lista):
             ret_list = skupovne_operacije.comp_op(lista, lista2)
             ret_map = {}
 
-            for elem in ret_list:
-                ret_map[elem] = 0
+            if ret_list is not None:
+                if ret_list.nmb_of_element() == 0:
+                    ret_list = None
+                else:
+                    for elem in ret_list:
+                        ret_map[elem] = 0
 
         else:
             find1 = tree.does_word_exist(bin1)
@@ -108,9 +112,13 @@ def upitaj(tree, bin1, bin2, i, lista):
 
             ret_list = skupovne_operacije.comp_op(lista1, lista2)
             ret_map = {}
+
             if ret_list is not None:
-                for elem in ret_list:
-                    ret_map[elem] = mapa1[elem]
+                if ret_list.nmb_of_element() == 0:
+                    ret_list = None
+                else:
+                    for elem in ret_list:
+                        ret_map[elem] = mapa1[elem]
 
     # 1 = and
     elif i == 1:
@@ -124,13 +132,20 @@ def upitaj(tree, bin1, bin2, i, lista):
         mapa2 = find2[2]
 
         #mozda popraviti
-        dif = {k: mapa1.get(k, 0) + mapa2.get(k, 0) for k in set(mapa1) & set(mapa2)}
+        if bin1 == bin2:
+            dif = mapa1
+        else:
+            dif = {k: mapa1.get(k, 0) + mapa2.get(k, 0) for k in set(mapa1) & set(mapa2)}
 
         ret_list = skupovne_operacije.and_op(lista1, lista2)
+
         new_dict = {}
         if ret_list is not None:
-            for elem in ret_list:
-                new_dict[elem] = dif[elem]
+            if ret_list.nmb_of_element() == 0:
+                ret_list = None
+            else:
+                for elem in ret_list:
+                    new_dict[elem] = dif[elem]
 
         ret_map = new_dict
     # 2 = or
@@ -144,19 +159,28 @@ def upitaj(tree, bin1, bin2, i, lista):
 
         lista2 = find2[1]
         mapa2 = find2[2]
-
-        z = dict(Counter(mapa1) + Counter(mapa2))
+        if bin1 == bin2:
+            z = mapa1
+        else:
+            z = dict(Counter(mapa1) + Counter(mapa2))
 
         ret_list = skupovne_operacije.or_op(lista1, lista2)
+        if ret_list is not None:
+            if ret_list.nmb_of_element() == 0:
+                ret_list = None
+
         ret_map = z
+
     # samo jedna rec u upitu
     elif i == 3:
         find = tree.does_word_exist(bin1)
         ret_list = find[1]
         help = find[2]
-
-        for key in help.keys():
-            if help[key] != 0:
-                ret_map[key] = help[key]
-
+        if ret_list.nmb_of_element() != 0:
+            for key in help.keys():
+                if help[key] != 0:
+                    ret_map[key] = help[key]
+        else:
+            ret_list = None
+            ret_map = None
     return ret_list, ret_map
