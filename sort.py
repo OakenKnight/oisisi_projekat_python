@@ -1,4 +1,4 @@
-from lista import lista_bez_duplikata
+from lista import Lista_bez_duplikata
 
 def partition(arr, left, right, rang):
     # poslednji element postaje pivot

@@ -1,7 +1,7 @@
 from collections import Counter
 
 import skupovne_operacije
-from lista import lista_bez_duplikata
+from lista import Lista_bez_duplikata
 
 
 def parse(upit):
@@ -84,7 +84,7 @@ def upitaj(tree, bin1, bin2, i, lista):
     ret_map = {}
     if i == -42:
         print("Greska! Nije uneseno u dobrom formatu!")
-        ret_list = lista_bez_duplikata()
+        ret_list = Lista_bez_duplikata()
         ret_map = None
     # 0 = not
     elif i == 0:
@@ -131,7 +131,7 @@ def upitaj(tree, bin1, bin2, i, lista):
         lista2 = find2[1]
         mapa2 = find2[2]
 
-        #mozda popraviti
+        #TODO: mozda popraviti zbog upotrebe seta
 
         if bin1 == bin2:
             dif = mapa1

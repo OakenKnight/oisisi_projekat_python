@@ -1,4 +1,4 @@
-class lista_bez_duplikata(object):
+class Lista_bez_duplikata(object):
     def __init__(self):
         self.list = list()
 
