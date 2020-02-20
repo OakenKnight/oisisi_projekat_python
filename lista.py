@@ -10,7 +10,6 @@ class lista_bez_duplikata(object):
         for elem in self.list:
             if element == elem:
                 return False
-
         return True
 
     def add_element(self, element):
@@ -30,22 +29,13 @@ class lista_bez_duplikata(object):
         if self.list.__contains__(item) is False:
             self.list.append(item)
 
-    def copy(self):
-
-        lista1 = lista_bez_duplikata()
-
-        for item in self.list:
-            lista1.append(item)
-
-        return lista1
-
     def nmb_of_element(self):
         i = 0
         for elem in self.list:
             i += 1
         return i
 
-    def remove(self,item):
+    def remove(self, item):
         for elem in self.list:
             if elem == item:
                 self.list.remove(elem)
