@@ -11,7 +11,7 @@ from sort import *
 i = 10
 l = 0
 
-
+#formiraju se cvorovi grafa
 def napravi_cvorove(file_path, graph, vertices, lista_dokumenata, mapa):  # pravim mapu i listu
     fajlovi = os.listdir(file_path)
     for fajl in fajlovi:
@@ -24,7 +24,7 @@ def napravi_cvorove(file_path, graph, vertices, lista_dokumenata, mapa):  # prav
             mapa[putanja] = 0  # pravim mapu
             lista_dokumenata.append(putanja)
 
-
+#formiraju se veze izmedju cvorova grafa i stablo
 def napravi_veze_i_drvo(file_path, graph, vertices, parser, trie):
     fajlovi = os.listdir(file_path)
     for fajl in fajlovi:
@@ -35,7 +35,7 @@ def napravi_veze_i_drvo(file_path, graph, vertices, parser, trie):
         elif fajl.endswith("html") or fajl.endswith("htm"):
             parseHtml(file_path, trie, parser, fajl, vertices, graph, mapa)
 
-
+#parsiranje svake html stranice i pozivanje funkcija za pravljenje veza i stabla
 def parseHtml(file_path, trie, parser, fajl, vertices, graph, mapa):
     global l
     l = l + 1
@@ -47,6 +47,7 @@ def parseHtml(file_path, trie, parser, fajl, vertices, graph, mapa):
     for word in words:
         trie.add_word(word.lower(), putanja1, mapa)
 
+#funkcija za odredjivanje da li ce se parsirati po '/' ili '\'
 def win_or_lin():
     if "/" in os.path.abspath("test-skup"):
         slash = "/"
@@ -56,6 +57,7 @@ def win_or_lin():
         print("Nesto ne valja sa adresom!!!")
     return slash
 
+#pravi veze izmedju html stranica
 def napravi_veze(vert, edg, graph, vertices):
     global i
     for v in edg:
@@ -73,7 +75,7 @@ def napravi_veze(vert, edg, graph, vertices):
             graph.insert_edge(vert, vertices[v], i)
             i = i + 10
 
-
+#
 def proveri_postojanje(trie, word):
     if trie.does_word_exist(word)[1] is None:
         print("Ne postoji ta rec!")
@@ -81,14 +83,15 @@ def proveri_postojanje(trie, word):
         ret = trie.does_word_exist(word.lower())
         print(ret[2].keys())
 
-
+#funkcija proverava da li je prosledjena putanja direktorijum
 def postoji_direktorijum(file_path):
     if os.path.isdir(file_path):
         return True
     else:
         return False
 
-
+#funkcija koja se poziva na pocetku programa da bi korisnik mogao da odabere da li zeli da bira ponudjene direktorijume
+#ili zeli sam da unosi relativnu adresu u odnosu na 'test-skup' fajl
 def rucno_unos_direktorijuma():
     print("Za unos relativne adrese u odnosu na 'test-skup' unesite 1")
     print("Za odabir jednog od ponudjenih direktorijuma iz 'test-skup' direktorijuma unesite 2")
@@ -116,7 +119,8 @@ def rucno_unos_direktorijuma():
     elif int(unos) == 2:
         return False, ""
 
-
+#funkcija koja omogucava izbor direktorijuma ukuliko se korisnik odluci za tu opciju
+#u suprotnom prosledjuje direktorijum koji je korisnik sam uneo
 def izaberi_direktorijum():
     (rucno, korenski_dir) = rucno_unos_direktorijuma()
     if rucno:
@@ -183,7 +187,7 @@ def izaberi_direktorijum():
                     print("#Nepostojeca komanda !!!")
         return korenski_dir
 
-
+#funkcija koja omogucava korisniku da promeni broj rezultata koji ce se prikazivati odjednom
 def promena_n():
     while True:
         print("Koliko stranica zelite da se prikaze odjednom(ceo broj):")
@@ -198,7 +202,7 @@ def promena_n():
         else:
             return uneseno
 
-
+#ispis jednog rezultata
 def ispis(doc, i, rang):
     (inc, outg) = graph.get_in_out(vertices[doc])
     print(i, ".", doc)
@@ -206,7 +210,7 @@ def ispis(doc, i, rang):
     # print("\t\t-Broj stranica koje pokazuju na ovu stranicu:", len(inc))
     # print("\t\t-Broj stranica na koje pokazuje ova stranica:", len(outg))
 
-
+#formatiran ispis svih rezultata razvrstan po stranicama uz mogucnost 'setanja' kroz stranice
 def prikaz_rezultata(n, doc_list, rangovi):
     petlja = True
     unos = 1
@@ -265,6 +269,7 @@ def prikaz_rezultata(n, doc_list, rangovi):
             print("Nepoznata komanda!!!")
 
 
+#funkcija koja omogucava unos trazenih reci, poziva funkcije za trazenje reci, rangiranje, sortiranje, ispis...
 def pretrazivanje_reci_i_prikaz():
     userInput = 1
     petlja = True

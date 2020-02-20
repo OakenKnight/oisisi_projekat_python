@@ -22,6 +22,7 @@ def quick_sort(arr, left, right, rang):
         quick_sort(arr, pivot + 1, right, rang)
 
 
+#funkcija izracunava rang jedne stranice
 def izracunaj_rang(graph, vert, ponavljanja, arr):
     (inc, outg) = graph.get_in_out(vert)
     suma = 0
@@ -31,6 +32,8 @@ def izracunaj_rang(graph, vert, ponavljanja, arr):
     # mozda ispraviti
     return 1 * ponavljanja[str(vert)] + 0.9 * graph.count_of_incoming(vert) + 0.8 * suma
 
+
+#funkcija izracunava rang svih stranica koje su rezultat pretrage
 def rang_svih(ponavljanja ,vertices ,graph ,arr):
     rang = {}
     for a in arr:
