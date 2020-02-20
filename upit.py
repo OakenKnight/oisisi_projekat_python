@@ -80,12 +80,11 @@ def parse(upit):
 
 
 def upitaj(tree, bin1, bin2, i, lista):
-    ret_list = lista_bez_duplikata()
+    ret_list = None
     ret_map = {}
-
     if i == -42:
         print("Greska! Nije uneseno u dobrom formatu!")
-        ret_list = None
+        ret_list = lista_bez_duplikata()
         ret_map = None
     # 0 = not
     elif i == 0:
@@ -109,9 +108,10 @@ def upitaj(tree, bin1, bin2, i, lista):
 
             ret_list = skupovne_operacije.comp_op(lista1, lista2)
             ret_map = {}
+            if ret_list is not None:
+                for elem in ret_list:
+                    ret_map[elem] = mapa1[elem]
 
-            for elem in ret_list:
-                ret_map[elem] = mapa1[elem]
     # 1 = and
     elif i == 1:
         find1 = tree.does_word_exist(bin1)
@@ -123,13 +123,14 @@ def upitaj(tree, bin1, bin2, i, lista):
         lista2 = find2[1]
         mapa2 = find2[2]
 
+        #mozda popraviti
         dif = {k: mapa1.get(k, 0) + mapa2.get(k, 0) for k in set(mapa1) & set(mapa2)}
 
         ret_list = skupovne_operacije.and_op(lista1, lista2)
         new_dict = {}
-
-        for elem in ret_list:
-            new_dict[elem] = dif[elem]
+        if ret_list is not None:
+            for elem in ret_list:
+                new_dict[elem] = dif[elem]
 
         ret_map = new_dict
     # 2 = or

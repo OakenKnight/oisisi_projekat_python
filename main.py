@@ -292,18 +292,23 @@ def pretrazivanje_reci_i_prikaz():
             print(doc_list)
 
             if doc_list is not None:
-                start = time.time()
-                rang = rang_svih(ponavljanja,vertices,graph,doc_list)
-                quick_sort(doc_list, 0, doc_list.nmb_of_element() - 1, rang)
-                print(time.time()-start)
-                print("---------------------------------------------------------------")
-                print("~~~~~~~~Trazena rec se pojavljuje u sledecim stranicama~~~~~~~~")
-                if prikaz_rezultata(n, doc_list, rang):
-                    break
+                if doc_list.nmb_of_element() == 0:
+                    continue
+                else:
+                    start = time.time()
+                    rang = rang_svih(ponavljanja,vertices,graph,doc_list)
+                    quick_sort(doc_list, 0, doc_list.nmb_of_element() - 1, rang)
+                    print(time.time()-start)
+                    print("---------------------------------------------------------------")
+                    print("~~~~~~~~Trazena rec se pojavljuje u sledecim stranicama~~~~~~~~")
+                    if prikaz_rezultata(n, doc_list, rang):
+                        break
 
-                print("---------------------------------------------------------------")
-            else:
-                print("~~~~~~~~Trazena rec se ne pojavljuje ni u jednoj stranici izabranog direktorijuma~~~~~~~~")
+                    print("---------------------------------------------------------------")
+
+            elif doc_list is None:
+
+                print("~~~~~~~~Trazeni unos se ne pojavljuje ni u jednoj stranici izabranog direktorijuma~~~~~~~~")
 
         elif user_inp == 0:
             petlja = False
