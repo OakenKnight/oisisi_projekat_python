@@ -132,6 +132,7 @@ def upitaj(tree, bin1, bin2, i, lista):
         mapa2 = find2[2]
 
         #mozda popraviti
+
         if bin1 == bin2:
             dif = mapa1
         else:
