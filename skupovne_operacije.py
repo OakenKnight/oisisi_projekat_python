@@ -1,7 +1,7 @@
 from lista import Lista_bez_duplikata
 
 
-def and_op(lista1, lista2): # sve elementi koji su u obe liste
+def and_op(lista1, lista2):  # sve elementi koji su u obe liste
 
     if lista1 is not None and lista2 is not None:
         ret_lista = Lista_bez_duplikata()
@@ -15,7 +15,7 @@ def and_op(lista1, lista2): # sve elementi koji su u obe liste
     return ret_lista
 
 
-def or_op(lista1, lista2): # svi elementi iz prve i druge liste
+def or_op(lista1, lista2):  # svi elementi iz prve i druge liste
     if lista1 is None and lista2 is not None:
         ret_lista = lista2
     elif lista1 is not None and lista2 is None:
@@ -31,7 +31,8 @@ def or_op(lista1, lista2): # svi elementi iz prve i druge liste
     return ret_lista
 
 
-def comp_op(lista1, lista2):  # svi elementi prve liste koji se ne poklapaju ni sa jednim lementom druge liste (prva i ne druga lista)
+def comp_op(lista1,
+            lista2):  # svi elementi prve liste koji se ne poklapaju ni sa jednim lementom druge liste (prva i ne druga lista)
     ret = Lista_bez_duplikata()
     if lista1 is not None:
         for elem in lista1:

@@ -25,7 +25,7 @@ class Lista_bez_duplikata(object):
     def __getitem__(self, index):
         return self.list[index]
 
-    def append(self,item):
+    def append(self, item):
         if self.list.__contains__(item) is False:
             self.list.append(item)
 

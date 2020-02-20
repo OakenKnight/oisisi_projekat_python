@@ -1,12 +1,12 @@
 from queue import Queue
 
-from treeNode import TreeNode
 from lista import Lista_bez_duplikata
+from treeNode import TreeNode
 
 
 class Tree(object):
 
-    def __init__(self,mapa):
+    def __init__(self, mapa):
         self.root = TreeNode("*", mapa)
 
     # dodavanje reci u stablo
@@ -15,7 +15,7 @@ class Tree(object):
         files = torka[1]
         mapa = torka[2]
 
-       # ukoliko je does_word_exist vratio None, znaci da rec ne postoji! onda napravim set fajlova
+        # ukoliko je does_word_exist vratio None, znaci da rec ne postoji! onda napravim set fajlova
 
         if files is None:
             files = Lista_bez_duplikata()
@@ -32,7 +32,7 @@ class Tree(object):
 
         for letter in word:
             if letter not in curr_node.children:
-                curr_node.children[letter] = TreeNode(letter,mapa)
+                curr_node.children[letter] = TreeNode(letter, mapa)
 
             curr_node = curr_node.children[letter]
 
@@ -54,7 +54,6 @@ class Tree(object):
         node = self.root
         for letter in word:
             if letter not in curr_node.children:
-
                 # ukoliko ne postoji jedno od slova odmah iskace
 
                 return False, None, node.ponavljanje

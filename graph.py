@@ -3,24 +3,24 @@ class Graph:
         self._outgoing = {}
         self._incoming = {} if directed else self._outgoing
 
-#provera da li postoji trazeni cvor
+    # provera da li postoji trazeni cvor
     def _validate_vertex(self, v):
         if not isinstance(v, self.Vertex):
             raise TypeError('Vertex expected')
         if v not in self._outgoing:
             raise ValueError('Vertex does not belong to this graph.')
 
-#broj ulaznih cvorova
-    def count_of_incoming(self,v):
+    # broj ulaznih cvorova
+    def count_of_incoming(self, v):
         self._validate_vertex(v)
         return len(self._incoming[v])
 
-#vraca ulazne i izlazne cvorove
+    # vraca ulazne i izlazne cvorove
     def get_in_out(self, v):
         self._validate_vertex(v)
         return self._incoming[v], self._outgoing
 
-#dodaje cvor
+    # dodaje cvor
     def insert_vertex(self, x=None):
         v = self.Vertex(x)
         self._outgoing[v] = {}
@@ -28,7 +28,7 @@ class Graph:
             self._incoming[v] = {}  # need distinct map for incoming edges
         return v
 
-#dodaje vezu od do
+    # dodaje vezu od do
     def insert_edge(self, u, v, x=None):
         if self.get_edge(u, v) is not None:  # includes error checking
             raise ValueError('u and v are already adjacent')

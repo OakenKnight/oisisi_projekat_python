@@ -3,7 +3,6 @@ from lista import Lista_bez_duplikata
 
 class TreeNode(object):
     def __init__(self, letter, mapa):
-
         map = {}
         for elem in mapa.keys():
             map[elem] = 0

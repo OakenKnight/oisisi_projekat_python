@@ -67,8 +67,8 @@ def parse(upit):
             return i, bin1, bin2
 
         else:
-            bin1=""
-            bin2=""
+            bin1 = ""
+            bin2 = ""
             i = -42
             return i, bin1, bin2
     # ukoliko nije duzina upita 1 2 3 reci onda je greska
@@ -131,7 +131,7 @@ def upitaj(tree, bin1, bin2, i, lista):
         lista2 = find2[1]
         mapa2 = find2[2]
 
-        #TODO: mozda popraviti zbog upotrebe seta
+        # TODO: mozda popraviti zbog upotrebe seta
 
         if bin1 == bin2:
             dif = mapa1
