@@ -177,11 +177,12 @@ def upitaj(tree, bin1, bin2, i, lista):
         find = tree.does_word_exist(bin1)
         ret_list = find[1]
         help = find[2]
-        if ret_list.nmb_of_element() != 0:
-            for key in help.keys():
-                if help[key] != 0:
-                    ret_map[key] = help[key]
-        else:
-            ret_list = None
-            ret_map = None
+        if ret_list is not None:
+            if ret_list.nmb_of_element() != 0:
+                for key in help.keys():
+                    if help[key] != 0:
+                        ret_map[key] = help[key]
+            else:
+                ret_list = None
+                ret_map = None
     return ret_list, ret_map
