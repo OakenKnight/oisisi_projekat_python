@@ -7,6 +7,8 @@ za efikasno pretraživanje. Nakon toga, program omogućuje korisniku da unosi te
 koji se sastoje od jedne ili više reči razdvojenih razmakom, pretražuje dokumente i korisniku ispisuje rangirane rezultate pretrage u vidu
 putanja do dokumenata.
 
+Korišćen je Python 3.8.
+
 ## Implementirane funkcionalosti
 
 1.1 Parsiranje HTML dokumenata
