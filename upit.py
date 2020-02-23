@@ -5,29 +5,52 @@ from lista import Lista_bez_duplikata
 
 
 def parse(upit):
+    upit = upit.lower()
     words = upit.split()
     bin1 = ""
     bin2 = ""
     i = 0
+    if len(words) > 3:
+        for word in words:
+            if word == "not" or words == "and" or words == "or":
+                i = -42
+                bin1 = ""
+                bin2 = ""
+                return i, bin1, bin2
+
+        bin1 = "1"
+        bin2 = upit.lower()
+        i = 4
+        return i, bin1, bin2
     # ukoliko se upit sastorji iz 3 reci i bas srednja je "not", "and", "or",
     if len(words) == 3:
-        if words[0] != "not" and words[0] != "and" and words[0] != "or" and words[2] != "not" and words[2] != "and" and \
-                words[2] != "or":
-            if words[1] == "not":
-                i = 0
-                bin1 = words[0]
-                bin2 = words[2]
-            elif words[1] == "and":
-                i = 1
-                bin1 = words[0]
-                bin2 = words[2]
-            elif words[1] == "or":
-                i = 2
-                bin1 = words[0]
-                bin2 = words[2]
-            else:
-                i = -42
+        k = 1
+        for word in words:
+            if word == "not" or words == "and" or words == "or":
+                k = 0
 
+        if k == 0:
+            if words[0] != "not" and words[0] != "and" and words[0] != "or" and words[2] != "not" and words[2] != "and" and words[2] != "or":
+                if words[1] == "not":
+                    i = 0
+                    bin1 = words[0]
+                    bin2 = words[2]
+                elif words[1] == "and":
+                    i = 1
+                    bin1 = words[0]
+                    bin2 = words[2]
+                elif words[1] == "or":
+                    i = 2
+                    bin1 = words[0]
+                    bin2 = words[2]
+                else:
+                    i = -42
+
+                return i, bin1, bin2
+        else:
+            bin1 = "1"
+            bin2 = upit.lower()
+            i = 4
             return i, bin1, bin2
 
     # ukoliko se upit sastorji iz 2 reci
@@ -82,6 +105,7 @@ def parse(upit):
 def upitaj(tree, bin1, bin2, i, lista):
     ret_list = None
     ret_map = {}
+
     if i == -42:
         print("Greska! Nije uneseno u dobrom formatu!")
         ret_list = Lista_bez_duplikata()
@@ -160,6 +184,7 @@ def upitaj(tree, bin1, bin2, i, lista):
 
         lista2 = find2[1]
         mapa2 = find2[2]
+
         if bin1 == bin2:
             z = mapa1
         else:
@@ -185,4 +210,50 @@ def upitaj(tree, bin1, bin2, i, lista):
             else:
                 ret_list = None
                 ret_map = None
+
+    elif i == 4:
+        words = bin2.split()
+        pomocna = []
+        mape = []
+        for word in words:
+            find = tree.does_word_exist(word)
+            if find[1] is not None:
+                if find[1].nmb_of_element() != 0:
+                    pomoc = find[1].set_to_list()
+                    pomocna.append(pomoc)
+                    mape.append(find[2])
+
+        lista1 = None
+        lista2 = None
+        if len(pomocna) > 2:
+            lista1 = list_to_set(pomocna[0])
+            lista2 = list_to_set(pomocna[1])
+
+            ret_list = skupovne_operacije.or_op(lista1, lista2)
+            ret_map = dict(Counter(mape[0]) + Counter(mape[1]))
+
+            for i in range(2, len(pomocna)):
+                pomoc = list_to_set(pomocna[i])
+                ret_list = skupovne_operacije.or_op(ret_list, pomoc)
+                ret_map = dict(Counter(mape[i]) + Counter(ret_map))
+        elif len(pomocna) == 2:
+            lista1 = list_to_set(pomocna[0])
+            lista2 = list_to_set(pomocna[1])
+
+            ret_list = skupovne_operacije.or_op(lista1, lista2)
+            ret_map = dict(Counter(mape[0]) + Counter(mape[1]))
+
+        elif len(pomocna) == 1:
+            ret_list = list_to_set(pomocna[0])
+            ret_map = mape[0]
+        else:
+            ret_list = None
+            ret_map = None
     return ret_list, ret_map
+
+
+def list_to_set(lista):
+    ret = Lista_bez_duplikata()
+    for elem in lista:
+        ret.append(elem)
+    return ret

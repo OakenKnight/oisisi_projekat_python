@@ -39,3 +39,9 @@ class Lista_bez_duplikata(object):
         for elem in self.list:
             if elem == item:
                 self.list.remove(elem)
+    def set_to_list(self):
+        ret_list = []
+        for elem in self.list:
+            ret_list.append(elem)
+
+        return ret_list

@@ -314,7 +314,7 @@ def pretrazivanje_reci_i_prikaz():
                     start = time.time()
                     rang = rang_svih(ponavljanja, vertices, graph, doc_list)
                     quick_sort(doc_list, 0, doc_list.nmb_of_element() - 1, rang)
-                    print(time.time() - start)
+                    #print(time.time() - start)
                     print("---------------------------------------------------------------")
                     print("~~~~~~~~Trazena rec se pojavljuje u sledecim stranicama~~~~~~~~")
                     if prikaz_rezultata(n, doc_list, rang):
