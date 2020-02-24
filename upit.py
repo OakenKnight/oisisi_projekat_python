@@ -12,7 +12,7 @@ def parse(upit):
     i = 0
     if len(words) > 3:
         for word in words:
-            if word == "not" or words == "and" or words == "or":
+            if word == "not" or word == "and" or word == "or":
                 i = -42
                 bin1 = ""
                 bin2 = ""
@@ -23,30 +23,38 @@ def parse(upit):
         i = 4
         return i, bin1, bin2
     # ukoliko se upit sastorji iz 3 reci i bas srednja je "not", "and", "or",
-    if len(words) == 3:
+    elif len(words) == 3:
         k = 1
         for word in words:
-            if word == "not" or words == "and" or words == "or":
+            if word == "not" or word == "and" or word == "or":
                 k = 0
 
         if k == 0:
-            if words[0] != "not" and words[0] != "and" and words[0] != "or" and words[2] != "not" and words[2] != "and" and words[2] != "or":
-                if words[1] == "not":
+            if words[1] == "not":
+                if words[0] != "not" and words[0] != "and" and words[0] != "or" and words[2] != "not" and words[2] != "and" and words[2] != "or":
                     i = 0
                     bin1 = words[0]
                     bin2 = words[2]
-                elif words[1] == "and":
+                else:
+                    i = -42
+            elif words[1] == "and":
+                if words[0] != "not" and words[0] != "and" and words[0] != "or" and words[2] != "not" and words[2] != "and" and words[2] != "or":
                     i = 1
                     bin1 = words[0]
                     bin2 = words[2]
-                elif words[1] == "or":
+                else:
+                    i = -42
+            elif words[1] == "or":
+                if words[0] != "not" and words[0] != "and" and words[0] != "or" and words[2] != "not" and words[2] != "and" and words[2] != "or":
                     i = 2
                     bin1 = words[0]
                     bin2 = words[2]
                 else:
                     i = -42
+            else:
+                i = -42
 
-                return i, bin1, bin2
+            return i, bin1, bin2
         else:
             bin1 = "1"
             bin2 = upit.lower()
