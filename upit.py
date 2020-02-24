@@ -26,7 +26,7 @@ def parse(upit):
     if len(words) == 3:
         k = 1
         for word in words:
-            if word == "not" or words == "and" or words == "or":
+            if word == "not" or word == "and" or word == "or":
                 k = 0
 
         if k == 0:
