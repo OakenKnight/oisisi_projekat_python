@@ -1,5 +1,4 @@
 import os
-import platform
 import time
 
 import upit
@@ -8,7 +7,7 @@ from parser import Parser
 from sort import *
 from tree import Tree
 
-i = 10
+i = 1
 l = 0
 
 
@@ -78,7 +77,7 @@ def napravi_veze(vert, edg, graph, vertices):
                     prodji = True
         if vertices.__contains__(v):
             graph.insert_edge(vert, vertices[v], i)
-            i = i + 10
+            i = i + 1
 
 
 #
@@ -101,28 +100,28 @@ def postoji_direktorijum(file_path):
 # funkcija koja se poziva na pocetku programa da bi korisnik mogao da odabere da li zeli da bira ponudjene direktorijume
 # ili zeli sam da unosi relativnu adresu u odnosu na 'test-skup' fajl
 def rucno_unos_direktorijuma():
-    print("Za unos relativne adrese u odnosu na 'test-skup' unesite 1")
-    print("Za odabir jednog od ponudjenih direktorijuma iz 'test-skup' direktorijuma unesite 2")
+    print("1 - Unos relativne adrese u odnosu na 'test-skup'")
+    print("2 - Odabir jednog od ponudjenih direktorijuma iz 'test-skup' direktorijuma")
     unos = input(">>>>")
     adresa = ""
     slash = win_or_lin()
     if int(unos) == 1:
         petlja = True
         while petlja:
-            print('Unesite adresu(npr. test-skup' + slash + '...' + slash + '...' + slash + '...):')
+            print('-Unesite adresu(npr. test-skup' + slash + '...' + slash + '...' + slash + '...):')
             adresa = input(">>>>")
             if "test-skup" in adresa:
                 if postoji_direktorijum(adresa):
                     petlja = False
                 else:
-                    print("Zeljena adresa ne postoji kao poddirektorijum 'test-skup' direktorijuma")
+                    print("----Zeljena adresa ne postoji kao poddirektorijum 'test-skup' direktorijuma----")
             else:
                 adresa = os.path.join("test-skup", adresa)
                 if postoji_direktorijum(adresa):
                     petlja = False
                 else:
-                    print("Zeljena adresa ne postoji kao poddirektorijum 'test-skup' direktorijuma")
-                    print("Proverite da li ste ispravno uneli adresu")
+                    print("----Zeljena adresa ne postoji kao poddirektorijum 'test-skup' direktorijuma----")
+                    print("----Proverite da li ste ispravno uneli adresu----")
         return True, adresa
     elif int(unos) == 2:
         return False, ""
@@ -150,34 +149,34 @@ def izaberi_direktorijum():
                     print(i, ".", dir)
                     i = i + 1
             if i == 1:
-                print("#Trenutni direktorijum nema poddirektorijume.")
+                print("----Trenutni direktorijum nema poddirektorijume----")
                 print(
-                    "#Za povratak u prethodni direktorijum unesite 1\n#Za ostanak u trenutnom direktorijumu unesite 2")
+                    "-1 - Povratak u prethodni direktorijum\n 0 - Ostanak u trenutnom direktorijumu")
                 unos = input(">>>>")
                 try:
                     uneseno = int(unos)
                 except ValueError:
-                    print("Nije unesen broj! Molimo Vas pokusajte ponovo!")
+                    print("----Nije unesen broj! Molimo Vas pokusajte ponovo----")
                     continue
-                if uneseno == 1:
+                if uneseno == -1:
                     st = korenski_dir.split(slash)
                     duzina_poslednjeg = len(st[len(st) - 1]) + 1
                     korenski_dir = korenski_dir[: -duzina_poslednjeg]
                     continue
-                elif uneseno == 2:
+                elif uneseno == 0:
                     petlja = False
-                    print("#Izabrali ste direktorijum: ", str(korenski_dir))
+                    print("Izabrali ste direktorijum: ", str(korenski_dir))
                     continue
                 else:
-                    print("Nepoznata komanda!!!")
+                    print("----Nepoznata komanda----")
             elif i != 1:
                 print(
-                    "#Izaberite broj direktorijuma\n#Za povratak u prethodni direktorijum unesite -1\n#Za ostanak u trenutnom direktorijumu unesite 0")
+                    "-Izaberite broj direktorijuma:\n-1 - Povratak u prethodni direktorijum\n 0 - Ostanak u trenutnom direktorijumu")
                 unos = input(">>>>")
                 try:
                     uneseno = int(unos)
                 except ValueError:
-                    print("Nije unesen broj! Molimo Vas pokusajte ponovo!")
+                    print("----Nije unesen broj! Molimo Vas pokusajte ponovo----")
                     continue
 
                 if uneseno < i and uneseno > 0:
@@ -185,55 +184,58 @@ def izaberi_direktorijum():
                 elif uneseno == -1:
                     st = korenski_dir.split(slash)
                     if len(st) == 1:
-                        print("Nalazite se u prvom direktorijumu!!!(Nema 'nadredjenih' direktorijuma)")
+                        print("----Nalazite se u prvom direktorijumu!!!(Nema 'nadredjenih' direktorijuma)----")
                         continue
                     duzina_poslednjeg = len(st[len(st) - 1]) + 1
                     korenski_dir = korenski_dir[: -duzina_poslednjeg]
                     continue
                 elif uneseno == 0:
-                    print("#Izabrali ste direktorijum: ", str(korenski_dir))
+                    print("Izabrali ste direktorijum: ", str(korenski_dir))
                     petlja = False
                 else:
-                    print("#Nepostojeca komanda !!!")
+                    print("----Nepostojeca komanda----")
         return korenski_dir
 
 
 # funkcija koja omogucava korisniku da promeni broj rezultata koji ce se prikazivati odjednom
 def promena_n():
     while True:
-        print("Koliko stranica zelite da se prikaze odjednom(ceo broj):")
+        print("-Koliko stranica zelite da se prikaze odjednom(ceo broj):")
         unos = input(">>>>")
         try:
             uneseno = int(unos)
         except ValueError:
-            print("Nije unesen broj!")
+            print("----Nije unesen broj----")
             continue
         if uneseno < 1:
-            print("Nemoguce je prikazati manje od 1 stranice!!!")
+            print("----Nemoguce je prikazati manje od 1 stranice----")
         else:
             return uneseno
 
 
 # ispis jednog rezultata
-def ispis(doc, i, rang):
+def ispis(doc, i, rang, br_reci, reci_u_linkovima):
     (inc, outg) = graph.get_in_out(vertices[doc])
     print(i, ".", doc)
-    print("\t\t-Rang stranice:", int(rang))
-    # print("\t\t-Broj stranica koje pokazuju na ovu stranicu:", len(inc))
-    # print("\t\t-Broj stranica na koje pokazuje ova stranica:", len(outg))
+    print("\t\t-Rang stranice:", round(rang, 3))
+    print("\t\t-Broj trazenih reci:", br_reci)
+    print("\t\t-Broj linkova na ovu stranicu:", len(inc))
+    print("\t\t-Broj trazenih reci u linkovima:", reci_u_linkovima)
+
+
 
 
 # formatiran ispis svih rezultata razvrstan po stranicama uz mogucnost 'setanja' kroz stranice
-def prikaz_rezultata(n, doc_list, rangovi):
+def prikaz_rezultata(n, doc_list, rangovi, ponavljanja, br_reci_u_linkovima):
     petlja = True
     unos = 1
-    broj_stranica = int(doc_list.nmb_of_element() / n + 0.999)
+    broj_stranica = int(doc_list.nmb_of_element() / n + 0.99999)
     # da li ovde treba da se unese zastita??
     while petlja:
         # print(doc_list)
         for i in range((int(unos) - 1) * n, int(unos) * n):
             if i < doc_list.nmb_of_element():
-                ispis(doc_list[i], i + 1, rangovi[doc_list[i]])
+                ispis(doc_list[i], i + 1, rangovi[doc_list[i]], ponavljanja[doc_list[i]], br_reci_u_linkovima[doc_list[i]])
         print(">", end=" ")
         if broj_stranica < 11:
             for i in range(1, broj_stranica + 1):
@@ -257,21 +259,21 @@ def prikaz_rezultata(n, doc_list, rangovi):
         try:
             uneseno = int(inp)
         except ValueError:
-            print("Nije dobar unos! Unesite broj!")
+            print("----Nije dobar unos! Unesite broj----")
             continue
         if uneseno == 1:
             while (True):
-                unos = input("Broj stranice:\n>>>>")
+                unos = input("-Broj stranice:\n>>>>")
                 try:
                     unos = int(unos)
                 except ValueError:
-                    print("Nije dobar unos! Unesite ceo broj!")
+                    print("----Nije dobar unos! Unesite ceo broj----")
                     continue
                 if unos > broj_stranica or unos < 1:
                     if broj_stranica == 1:
-                        print("Za unetu pretragu postoji samo jedna stranica")
+                        print("-Za unetu pretragu postoji samo jedna stranica")
                     else:
-                        print("Izaberite stranicu iz opsega [1,%d]" % broj_stranica)
+                        print("-Izaberite stranicu iz opsega [1,%d]" % broj_stranica)
                 else:
                     break
         elif uneseno == 2:
@@ -279,7 +281,7 @@ def prikaz_rezultata(n, doc_list, rangovi):
         elif uneseno == 0:
             return True
         else:
-            print("Nepoznata komanda!!!")
+            print("----Nepoznata komanda----")
 
 
 # funkcija koja omogucava unos trazenih reci, poziva funkcije za trazenje reci, rangiranje, sortiranje, ispis...
@@ -296,28 +298,29 @@ def pretrazivanje_reci_i_prikaz():
         try:
             user_inp = int(userInput)
         except ValueError:
-            print("Nije unesen broj! Unesite opet!")
+            print("----Nije unesen broj! Unesite opet----")
             continue
 
         if user_inp == 1:
-            querry = input("Unesite rec za pretrazivanje: ")
+            querry = input("-Unesite rec za pretrazivanje: ")
 
             ret_querry = upit.parse(querry)
             ret = upit.upitaj(trie, ret_querry[1], ret_querry[2], ret_querry[0], lista_dokumenata)
             doc_list = ret[0]
             ponavljanja = ret[1]
 
+
             if doc_list is not None:
                 if doc_list.nmb_of_element() == 0:
                     continue
                 else:
                     start = time.time()
-                    rang = rang_svih(ponavljanja, vertices, graph, doc_list)
+                    (rang, br_reci_u_linkovima) = rang_svih(ponavljanja, vertices, graph, doc_list)
                     quick_sort(doc_list, 0, doc_list.nmb_of_element() - 1, rang)
                     #print(time.time() - start)
                     print("---------------------------------------------------------------")
                     print("~~~~~~~~Trazena rec se pojavljuje u sledecim stranicama~~~~~~~~")
-                    if prikaz_rezultata(n, doc_list, rang):
+                    if prikaz_rezultata(n, doc_list, rang, ponavljanja, br_reci_u_linkovima):
                         break
 
                     print("---------------------------------------------------------------")
@@ -332,7 +335,7 @@ def pretrazivanje_reci_i_prikaz():
             n = promena_n()
 
         else:
-            print("Nepoznata komanda")
+            print("----Nepoznata komanda----")
 
 
 if __name__ == "__main__":
