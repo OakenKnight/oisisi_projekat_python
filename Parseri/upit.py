@@ -163,12 +163,32 @@ def upitaj(tree, bin1, bin2, i, lista):
         lista2 = find2[1]
         mapa2 = find2[2]
 
-        # TODO: mozda popraviti zbog upotrebe seta
 
         if bin1 == bin2:
             dif = mapa1
         else:
-            dif = {k: mapa1.get(k, 0) + mapa2.get(k, 0) for k in set(mapa1) & set(mapa2)}
+            a = mapa1.keys()
+
+            set1 = []
+            set2 = []
+
+            b = mapa2. keys()
+
+            for elem in a:
+                set1.append(elem)
+
+            for elem in b:
+                set2.append(elem)
+
+            konacni_set = []
+
+            for elem in set1:
+                if set2.__contains__(elem):
+                    konacni_set.append(elem)
+
+            # dif = {k: mapa1.get(k, 0) + mapa2.get(k, 0) for k in set(mapa1) & set(mapa2)}
+
+            dif = {k: mapa1.get(k, 0) + mapa2.get(k, 0) for k in konacni_set}
 
         ret_list = skupovne_operacije.and_op(lista1, lista2)
 
