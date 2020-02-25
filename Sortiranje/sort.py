@@ -47,3 +47,4 @@ def rang_svih(ponavljanja, vertices, graph, arr):
     for a in arr:
         (rang[a], br_reci_u_linkovima[a]) = izracunaj_rang(graph, vertices[a], ponavljanja, arr)
     return (rang, br_reci_u_linkovima)
+

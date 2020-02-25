@@ -116,18 +116,16 @@ def rucno_unos_direktorijuma():
             while petlja:
                 print('-Unesite adresu(npr. test-skup' + slash + '...' + slash + '...' + slash + '...):')
                 adresa = input(">>>>")
-                if "test-skup" in adresa:
-                    if postoji_direktorijum(adresa):
-                        petlja = False
-                    else:
-                        print("----Zeljena adresa ne postoji kao poddirektorijum 'test-skup' direktorijuma----")
+                if not adresa.startswith('test-skup'):
+                    print("----Zeljena adresa ne postoji kao poddirektorijum 'test-skup' direktorijuma----")
+                    print("----Proverite da li ste ispravno uneli adresu----")
+                    continue
                 else:
-                    adresa = os.path.join("test-skup", adresa)
                     if postoji_direktorijum(adresa):
                         petlja = False
                     else:
-                        print("----Zeljena adresa ne postoji kao poddirektorijum 'test-skup' direktorijuma----")
-                        print("----Proverite da li ste ispravno uneli adresu----")
+                            print("----Zeljena adresa ne postoji kao poddirektorijum 'test-skup' direktorijuma----")
+                            print("----Proverite da li ste ispravno uneli adresu----")
             return True, adresa
         elif int(unos) == 2:
             return False, ""
@@ -322,7 +320,7 @@ def pretrazivanje_reci_i_prikaz():
                 if doc_list.nmb_of_element() == 0:
                     continue
                 else:
-                    start = time.time()
+                    #start = time.time()
                     (rang, br_reci_u_linkovima) = rang_svih(ponavljanja, vertices, graph, doc_list)
                     quick_sort(doc_list, 0, doc_list.nmb_of_element() - 1, rang)
                     # print(time.time() - start)
