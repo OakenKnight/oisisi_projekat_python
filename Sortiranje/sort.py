@@ -32,7 +32,8 @@ def izracunaj_rang(graph, vert, ponavljanja, arr):
     else:
         a = graph.count_of_incoming(vert)
     c = suma/a
-    return (3 * ponavljanja[str(vert)] + 1.5 * graph.count_of_incoming(vert) +  5 * c, suma)
+    return 3 * ponavljanja[str(vert)] + 1.5 * graph.count_of_incoming(vert) + 5 * c, suma
+
 # Rangiranje se vrsi tako da je broj trazenih reci najprioritetniji, ali ne i presudan tako da je moguce da iako stranica ima
 # vise trazenih reci od neke druge stranice ipak bude ispod nje. Broj linkova utice sa koeficijentom od 1.5 (pola  u odnosu na koeficijent za broj reci).
 # Broj trazenih reci u linkovima moze da bude izuzetno velik pa da se ne bi desilo da dodje do prevelikog uticaja na rang, najpre se nadje prosecan

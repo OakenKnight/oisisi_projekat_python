@@ -233,8 +233,6 @@ def ispis(doc, i, rang, br_reci, reci_u_linkovima):
     print("\t\t-Broj trazenih reci u linkovima:", reci_u_linkovima)
 
 
-
-
 # formatiran ispis svih rezultata razvrstan po stranicama uz mogucnost 'setanja' kroz stranice
 def prikaz_rezultata(n, doc_list, rangovi, ponavljanja, br_reci_u_linkovima):
     petlja = True
@@ -245,7 +243,8 @@ def prikaz_rezultata(n, doc_list, rangovi, ponavljanja, br_reci_u_linkovima):
         # print(doc_list)
         for i in range((int(unos) - 1) * n, int(unos) * n):
             if i < doc_list.nmb_of_element():
-                ispis(doc_list[i], i + 1, rangovi[doc_list[i]], ponavljanja[doc_list[i]], br_reci_u_linkovima[doc_list[i]])
+                ispis(doc_list[i], i + 1, rangovi[doc_list[i]], ponavljanja[doc_list[i]],
+                      br_reci_u_linkovima[doc_list[i]])
         print(">", end=" ")
         if broj_stranica < 11:
             for i in range(1, broj_stranica + 1):
@@ -319,7 +318,6 @@ def pretrazivanje_reci_i_prikaz():
             doc_list = ret[0]
             ponavljanja = ret[1]
 
-
             if doc_list is not None:
                 if doc_list.nmb_of_element() == 0:
                     continue
@@ -327,7 +325,7 @@ def pretrazivanje_reci_i_prikaz():
                     start = time.time()
                     (rang, br_reci_u_linkovima) = rang_svih(ponavljanja, vertices, graph, doc_list)
                     quick_sort(doc_list, 0, doc_list.nmb_of_element() - 1, rang)
-                    #print(time.time() - start)
+                    # print(time.time() - start)
                     print("---------------------------------------------------------------")
                     print("~~~~~~~~Trazena rec se pojavljuje u sledecim stranicama~~~~~~~~")
                     if prikaz_rezultata(n, doc_list, rang, ponavljanja, br_reci_u_linkovima):
