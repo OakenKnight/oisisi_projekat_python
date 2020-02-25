@@ -100,6 +100,11 @@ def postoji_direktorijum(file_path):
 # funkcija koja se poziva na pocetku programa da bi korisnik mogao da odabere da li zeli da bira ponudjene direktorijume
 # ili zeli sam da unosi relativnu adresu u odnosu na 'test-skup' fajl
 def rucno_unos_direktorijuma():
+    print("*****************************************************************************")
+    print("Da bi pretraga bila uspesna potrebno je direktorijum sa ciljnim stranicama\n"
+          "pozicionirati unutar direktorijuma 'test-skup'. U suprotnom nece biti moguce\n"
+          "pretrazivati stranice koje se nalaze van 'test-skup' direktorijuma.")
+    print("*****************************************************************************\n\n")
     while True:
         print("1 - Unos relativne adrese u odnosu na 'test-skup'")
         print("2 - Odabir jednog od ponudjenih direktorijuma iz 'test-skup' direktorijuma")
