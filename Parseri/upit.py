@@ -1,7 +1,7 @@
 from collections import Counter
 
-import skupovne_operacije
-from lista import Lista_bez_duplikata
+from Skupovi import skupovne_operacije
+from Skupovi.lista import Lista_bez_duplikata
 
 
 def parse(upit):

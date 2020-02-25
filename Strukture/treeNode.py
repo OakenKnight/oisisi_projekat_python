@@ -1,4 +1,4 @@
-from lista import Lista_bez_duplikata
+from Skupovi.lista import Lista_bez_duplikata
 
 
 class TreeNode(object):

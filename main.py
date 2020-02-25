@@ -1,11 +1,11 @@
 import os
 import time
 
-import upit
-from graph import Graph
-from parser import Parser
-from sort import *
-from tree import Tree
+from Parseri import upit
+from Strukture.graph import Graph
+from Parseri.parser import Parser
+from Sortiranje.sort import *
+from Strukture.tree import Tree
 
 i = 1
 l = 0

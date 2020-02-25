@@ -1,7 +1,7 @@
 from queue import Queue
 
-from lista import Lista_bez_duplikata
-from treeNode import TreeNode
+from Skupovi.lista import Lista_bez_duplikata
+from Strukture.treeNode import TreeNode
 
 
 class Tree(object):
