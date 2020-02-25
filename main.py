@@ -100,31 +100,39 @@ def postoji_direktorijum(file_path):
 # funkcija koja se poziva na pocetku programa da bi korisnik mogao da odabere da li zeli da bira ponudjene direktorijume
 # ili zeli sam da unosi relativnu adresu u odnosu na 'test-skup' fajl
 def rucno_unos_direktorijuma():
-    print("1 - Unos relativne adrese u odnosu na 'test-skup'")
-    print("2 - Odabir jednog od ponudjenih direktorijuma iz 'test-skup' direktorijuma")
-    unos = input(">>>>")
-    adresa = ""
-    slash = win_or_lin()
-    if int(unos) == 1:
-        petlja = True
-        while petlja:
-            print('-Unesite adresu(npr. test-skup' + slash + '...' + slash + '...' + slash + '...):')
-            adresa = input(">>>>")
-            if "test-skup" in adresa:
-                if postoji_direktorijum(adresa):
-                    petlja = False
+    while True:
+        print("1 - Unos relativne adrese u odnosu na 'test-skup'")
+        print("2 - Odabir jednog od ponudjenih direktorijuma iz 'test-skup' direktorijuma")
+        unos = input(">>>>")
+        try:
+            test = int(unos)
+        except ValueError:
+            print("----Nije unesen broj! Molimo Vas pokusajte ponovo----")
+            continue
+        adresa = ""
+        slash = win_or_lin()
+        if int(unos) == 1:
+            petlja = True
+            while petlja:
+                print('-Unesite adresu(npr. test-skup' + slash + '...' + slash + '...' + slash + '...):')
+                adresa = input(">>>>")
+                if "test-skup" in adresa:
+                    if postoji_direktorijum(adresa):
+                        petlja = False
+                    else:
+                        print("----Zeljena adresa ne postoji kao poddirektorijum 'test-skup' direktorijuma----")
                 else:
-                    print("----Zeljena adresa ne postoji kao poddirektorijum 'test-skup' direktorijuma----")
-            else:
-                adresa = os.path.join("test-skup", adresa)
-                if postoji_direktorijum(adresa):
-                    petlja = False
-                else:
-                    print("----Zeljena adresa ne postoji kao poddirektorijum 'test-skup' direktorijuma----")
-                    print("----Proverite da li ste ispravno uneli adresu----")
-        return True, adresa
-    elif int(unos) == 2:
-        return False, ""
+                    adresa = os.path.join("test-skup", adresa)
+                    if postoji_direktorijum(adresa):
+                        petlja = False
+                    else:
+                        print("----Zeljena adresa ne postoji kao poddirektorijum 'test-skup' direktorijuma----")
+                        print("----Proverite da li ste ispravno uneli adresu----")
+            return True, adresa
+        elif int(unos) == 2:
+            return False, ""
+        else:
+            print("----Nepoznata komanda----")
 
 
 # funkcija koja omogucava izbor direktorijuma ukuliko se korisnik odluci za tu opciju
@@ -200,7 +208,7 @@ def izaberi_direktorijum():
 # funkcija koja omogucava korisniku da promeni broj rezultata koji ce se prikazivati odjednom
 def promena_n():
     while True:
-        print("-Koliko stranica zelite da se prikaze odjednom(ceo broj):")
+        print("-Koliko stranica zelite da se prikaze odjednom(ceo broj 0<N<51):")
         unos = input(">>>>")
         try:
             uneseno = int(unos)
@@ -209,6 +217,8 @@ def promena_n():
             continue
         if uneseno < 1:
             print("----Nemoguce je prikazati manje od 1 stranice----")
+        elif uneseno > 50:
+            print("----Prevelik broj stranica(maksimum 50)----")
         else:
             return uneseno
 
@@ -253,8 +263,8 @@ def prikaz_rezultata(n, doc_list, rangovi, ponavljanja, br_reci_u_linkovima):
 
         print("<", end=" ")
         print("\n1 - Promena stranice:")
-        print("2 - Pretrazi sledecu rec:")
-        print("0 - Exit")
+        print("2 - Nazad")
+        print("0 - Izlaz")
         inp = input(">>>>")
         try:
             uneseno = int(inp)
@@ -292,7 +302,7 @@ def pretrazivanje_reci_i_prikaz():
     while petlja:
         print("1 - Pretrazi rec: ")
         print("2 - Promenite broj stranica koje ce biti prikazane odjednom (trenutno %d)" % n)
-        print("0 - Exit")
+        print("0 - Izlaz")
         userInput = input(">>>>>>>>")
 
         try:
@@ -347,7 +357,7 @@ if __name__ == "__main__":
     mapa = {}
     korenski_dir = izaberi_direktorijum()
 
-    print("Loading graph and trie....")
+    print("Ucitavanje grafa i stabla....")
 
     napravi_cvorove(korenski_dir, graph, vertices, lista_dokumenata, mapa)
 
